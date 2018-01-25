@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+	</head>
+	<style>
+	.regiao {
+	  fill: #99AAAA;
+	}
+
+	.regiao :hover {
+	  fill: red;
+	}
+
+	.regiao-borda {
+	  fill: none;
+	  stroke: #fff;
+	  stroke-width: 0.5px;
+	  stroke-linejoin: round;
+	  stroke-linecap: round;
+	  pointer-events: none;
+	}
+
+	</style>
+	<meta charset="utf-8">
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://d3js.org/topojson.v2.min.js"></script>
+
+	</head>	
+
+<body>
+
+	 <div id="title">
+        <h1>Onde A Polícia Mata?</h1>
+        <p>Homícidios decorrentes de intervenção policial no Rio de Janeiro</p>
+    </div>
+
+    <div id="sliderContainer">
+        <input id="timeslide" type="range" min="0" max="4" value="0" step="1"/><br>
+        <span id="range">2010</span>
+    </div>
+
+<svg width="960" height="600"></svg>
+
+<script>  
+var width = 960;
+var height = 600;
+
+var inputValue = null;
+var time = ["2010","2011","2012","2013","2014"];
+
+var svg = d3.select("svg");
+
+
+var projection = d3.geoMercator();
+var path = d3.geoPath().projection(projection);
+
+d3.json("rioauto.json", function(error, aisp) {
+
+
+        projection.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
+          
+         
+        svg.append("g")
+          .attr("class", "regiao")
+          .selectAll("path")
+          .data(topojson.feature(aisp, aisp.objects.convert).features)
+          .enter().append("path")
+          .attr("d", path);
+
+
+        svg.append("path")
+          .attr("class", "regiao-borda")
+          .attr("d", path(topojson.mesh(aisp, aisp.objects.convert, function(a, b) { return a !== b; })));
+        }); 
+
+   // when the input range changes update the rectangle 
+    d3.select("#timeslide").on("input", function() {
+        update(+this.value);
+    });
+
+    function update(value) {
+        document.getElementById("range").innerHTML=time[value];
+        inputValue = time[value];
+        d3.selectAll("path")
+            .style("fill", timeMatch)
+            ;
+    }
+
+    function timeMatch(aisp) {
+        if (inputValue == "2010") {
+            if (aisp.properties.dez > "5") {
+                return 'yellow'
+            } else {
+                return '#cb181d'
+            }
+        } else if (inputValue == "2011") {
+            if (aisp.properties.onze < "3") {
+                return 'pink'
+            } else {
+                return '#cb181d'
+            }
+        } else if (inputValue == "2012") {
+            if (aisp.properties.RISP == "1") {
+                return '#084594'
+            } else {
+                return '#cb181d'
+            }
+        // } else if (inputValue == "2013") {
+        //     if (data.properties.RISP == "4") {
+        //         return '#084594'
+        //     } else {
+        //         return '#cb181d'
+        //     }
+        // } else if (inputValue == "2014") {
+        //     if (data.properties.RISP == "5") {
+        //         return '#084594'
+        //     } else {
+        //         return '#cb181d'
+        //     }
+        };
+    }
+
+//     function initialState(data){
+//         if (document.getElementById("range").innerHTML == 2010) {
+//             if (data.properties.elect2000 == "D") {
+//                 return '#084594'
+//             } else {
+//                 return '#cb181d'
+//             }
+//         };
+
+// }
+</script>
