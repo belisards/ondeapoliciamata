@@ -51,17 +51,23 @@ body {
     }
 }
 */
-h1,
-h6 {
+    h1{
     font-family: 'Open Sans';
     font-weight: 300;
     text-align: center;
     top: 45%;
     right: 0;
     left: 0;
-}
+    }
 
 
+    h3{
+    font-family: 'Open Sans';
+    text-align: center;
+    top: 5%;
+    right: 0;
+    left: 0;
+    }
 
     .svg-container {
     display: inline-block;
@@ -70,7 +76,8 @@ h6 {
     padding-bottom: 100%; /* aspect ratio */
     vertical-align: center;
     overflow: hidden;
-}
+    }
+
     .svg-content-responsive {
         display: inline-block;
         position: absolute;
@@ -110,7 +117,7 @@ h6 {
 
 	 <div id="title">
         <h1>Onde A Polícia Mata?</h1>
-        <p>Homícidios decorrentes de intervenção policial no Rio de Janeiro</p>
+        <h3>Homícidios decorrentes de intervenção policial no Rio de Janeiro</h3>
     </div>
 
     <div id="sliderContainer">
@@ -118,22 +125,23 @@ h6 {
         <span id="range">2010</span>
     </div>
 
+    <div id="map"></div>
+
 <script>  
+
+// define var
 var width = 500;
 var height = 215;
 
 var inputValue = null;
 var time = ["2010","2011","2012","2013","2014"];
 
-var svg = d3.select("svg");
-
-
 var crs = d3.geoMercator();
 var path = d3.geoPath().projection(crs);
 
+// responsivo
 
-
-var svg = d3.select("body").append("div")
+var svg = d3.select("#map")
     .classed("svg-cont", true)
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
@@ -143,12 +151,9 @@ var svg = d3.select("body").append("div")
 
 
 
-
 d3.json("rioauto.json", function(error, aisp) {
 
-
         crs.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
-          
          
         svg.append("g")
           .attr("class", "regiao")
@@ -162,6 +167,17 @@ d3.json("rioauto.json", function(error, aisp) {
           .attr("class", "regiao-borda")
           .attr("d", path(topojson.mesh(aisp, aisp.objects.convert, function(a, b) { return a !== b; })));
         }); 
+
+
+
+    var offsetL = document.getElementById('map').offsetLeft+10;
+    var offsetT = document.getElementById('map').offsetTop+10;
+
+    var tooltip = d3.select("#map")
+         .append("div")
+         .attr("class", "tooltip hidden");
+
+
 
    // when the input range changes update the rectangle 
     d3.select("#timeslide").on("input", function() {
