@@ -1,6 +1,87 @@
 <!DOCTYPE html>
-	</head>
+<head>
+    <meta charset="utf-8">
+
 	<style>
+/*
+body {
+    width: 100wh;
+    height: 90vh;
+    color: #fff;
+    background: linear-gradient(-45deg, #000,  #c30101);
+    background-size: 200% 200%;
+    -webkit-animation: Gradient 25s ease infinite;
+    -moz-animation: Gradient 45s ease infinite;
+    animation: Gradient 15s ease infinite;
+}
+
+@-webkit-keyframes Gradient {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+@-moz-keyframes Gradient {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+@keyframes Gradient {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
+}
+*/
+h1,
+h6 {
+    font-family: 'Open Sans';
+    font-weight: 300;
+    text-align: center;
+    top: 45%;
+    right: 0;
+    left: 0;
+}
+
+
+
+    .svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: center;
+    overflow: hidden;
+}
+    .svg-content-responsive {
+        display: inline-block;
+        position: absolute;
+        top: 15%;
+        left: 0;
+    }
+
+    .title {
+        display: inline-block;
+
+    }
 	.regiao {
 	  fill: #99AAAA;
 	}
@@ -20,10 +101,9 @@
 
 	</style>
 
-	<meta charset="utf-8">
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://d3js.org/topojson.v2.min.js"></script>
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" type="text/css" />
 	</head>	
 
 <body>
@@ -38,11 +118,9 @@
         <span id="range">2010</span>
     </div>
 
-<svg></svg>
-
 <script>  
-var width = 960;
-var height = 600;
+var width = 500;
+var height = 215;
 
 var inputValue = null;
 var time = ["2010","2011","2012","2013","2014"];
@@ -55,9 +133,12 @@ var path = d3.geoPath().projection(crs);
 
 
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
+var svg = d3.select("body").append("div")
+    .classed("svg-cont", true)
+    .append("svg")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 560 250")
+    .classed("svg-content-responsive", true)
   .append("g");
 
 
