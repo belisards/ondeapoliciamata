@@ -11,7 +11,7 @@
 
 	.regiao-borda {
 	  fill: none;
-	  stroke: #fff;
+	  stroke: gray;
 	  stroke-width: 0.5px;
 	  stroke-linejoin: round;
 	  stroke-linecap: round;
@@ -19,6 +19,7 @@
 	}
 
 	</style>
+
 	<meta charset="utf-8">
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://d3js.org/topojson.v2.min.js"></script>
@@ -37,7 +38,7 @@
         <span id="range">2010</span>
     </div>
 
-<svg width="960" height="600"></svg>
+<svg></svg>
 
 <script>  
 var width = 960;
@@ -49,13 +50,23 @@ var time = ["2010","2011","2012","2013","2014"];
 var svg = d3.select("svg");
 
 
-var projection = d3.geoMercator();
-var path = d3.geoPath().projection(projection);
+var crs = d3.geoMercator();
+var path = d3.geoPath().projection(crs);
+
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g");
+
+
+
 
 d3.json("rioauto.json", function(error, aisp) {
 
 
-        projection.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
+        crs.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
           
          
         svg.append("g")
@@ -86,17 +97,34 @@ d3.json("rioauto.json", function(error, aisp) {
 
     function timeMatch(aisp) {
         if (inputValue == "2010") {
-            if (aisp.properties.dez > "5") {
+            if (aisp.properties.dez < "10") {
+                return 'blue'
+            }
+            if (aisp.properties.dez > "11" && aisp.properties.onze < "30") {
                 return 'yellow'
-            } else {
-                return '#cb181d'
             }
-        } else if (inputValue == "2011") {
-            if (aisp.properties.onze < "3") {
+            if (aisp.properties.dez >= "30") {
+                return 'red'
+            }
+             else {
                 return 'pink'
-            } else {
-                return '#cb181d'
             }
+
+        } else if (inputValue == "2011") {
+
+            if (aisp.properties.onze < "36") {
+                return '#fee8c8'
+            }
+            if (aisp.properties.onze >= "24" && aisp.properties.onze < "100" ) {
+                return '#fdbb84'
+            }
+            if (aisp.properties.onze >= "100") {
+                return '#e34a33'
+            }
+             else {
+                return 'pink'
+            }
+
         } else if (inputValue == "2012") {
             if (aisp.properties.RISP == "1") {
                 return '#084594'
