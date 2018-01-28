@@ -2,130 +2,28 @@
 <head>
     <meta charset="utf-8">
 
-	<style>
-/*
-body {
-    width: 100wh;
-    height: 90vh;
-    color: #fff;
-    background: linear-gradient(-45deg, #000,  #c30101);
-    background-size: 200% 200%;
-    -webkit-animation: Gradient 25s ease infinite;
-    -moz-animation: Gradient 45s ease infinite;
-    animation: Gradient 15s ease infinite;
-}
-
-@-webkit-keyframes Gradient {
-    0% {
-        background-position: 0% 50%
-    }
-    50% {
-        background-position: 100% 50%
-    }
-    100% {
-        background-position: 0% 50%
-    }
-}
-
-@-moz-keyframes Gradient {
-    0% {
-        background-position: 0% 50%
-    }
-    50% {
-        background-position: 100% 50%
-    }
-    100% {
-        background-position: 0% 50%
-    }
-}
-
-@keyframes Gradient {
-    0% {
-        background-position: 0% 50%
-    }
-    50% {
-        background-position: 100% 50%
-    }
-    100% {
-        background-position: 0% 50%
-    }
-}
-*/
-    h1{
-    font-family: 'Open Sans';
-    font-weight: 300;
-    text-align: center;
-    top: 45%;
-    right: 0;
-    left: 0;
-    }
-
-
-    h3{
-    font-family: 'Open Sans';
-    text-align: center;
-    top: 5%;
-    right: 0;
-    left: 0;
-    }
-
-    .svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%; /* aspect ratio */
-    vertical-align: center;
-    overflow: hidden;
-    }
-
-    .svg-content-responsive {
-        display: inline-block;
-        position: absolute;
-        top: 15%;
-        left: 0;
-    }
-
-    .title {
-        display: inline-block;
-
-    }
-	.regiao {
-	  fill: #99AAAA;
-	}
-
-	.regiao :hover {
-	  fill: red;
-	}
-
-	.regiao-borda {
-	  fill: none;
-	  stroke: gray;
-	  stroke-width: 0.5px;
-	  stroke-linejoin: round;
-	  stroke-linecap: round;
-	  pointer-events: none;
-	}
-
-	</style>
-
+    <title>Onde A Polícia Mata?</title>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://d3js.org/topojson.v2.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" type="text/css" />
+    <link href="estilo.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" type="text/css" />
 	</head>	
 
 <body>
-
-	 <div id="title">
-        <h1>Onde A Polícia Mata?</h1>
-        <h3>Homícidios decorrentes de intervenção policial no Rio de Janeiro</h3>
-    </div>
-
-    <div id="sliderContainer">
+  <div id="sliderContainer">
         <input id="timeslide" type="range" min="0" max="4" value="0" step="1"/><br>
-        <span id="range">2010</span>
+        <span id="range">2017</span>
     </div>
+	 <div id="title">
+        <img src="http://ondeapoliciamata.org/img/logo.png"></img></div></body>
+<!--         <h1>Onde A Polícia Mata?</h1>
+ -->        <h3>Homícidios decorrentes de intervenção policial no Rio de Janeiro</h3>
+    </div>
+
+  
 
     <div id="map"></div>
+    <div class="tooltip"></div>
 
 <script>  
 
@@ -136,8 +34,9 @@ var height = 215;
 var inputValue = null;
 var time = ["2010","2011","2012","2013","2014"];
 
-var crs = d3.geoMercator();
-var path = d3.geoPath().projection(crs);
+
+var projection = d3.geoMercator();
+var path = d3.geoPath().projection(projection);
 
 // responsivo
 
@@ -151,32 +50,44 @@ var svg = d3.select("#map")
 
 
 
+
 d3.json("rioauto.json", function(error, aisp) {
 
-        crs.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
+        projection.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
          
         svg.append("g")
           .attr("class", "regiao")
           .selectAll("path")
           .data(topojson.feature(aisp, aisp.objects.convert).features)
           .enter().append("path")
-          .attr("d", path);
+          .attr("d", path) 
+          .on('mouseover', tipMouseOver)
+          .on("mouseout", tipMouseOut)
+      }); 
 
 
-        svg.append("path")
-          .attr("class", "regiao-borda")
-          .attr("d", path(topojson.mesh(aisp, aisp.objects.convert, function(a, b) { return a !== b; })));
-        }); 
+//tooltip
+tipMouseOver = function(d, i) {
+        d3.select(".tooltip").html("<br><b>AISP " + d.properties.AISP + "</b>" 
+                               + "<br>2010: " + d.properties.dez
+                               + "<br>2011: " + d.properties.onze
+                               + "<br>2012: " + d.properties.doze
+                               + "<br>2013: " + d.properties.treze
+                               + "<br>2014: " + d.properties.catorze
+                               + "<br>2015: " + d.properties.quinze
+                               + "<br>2016: " + d.properties.dezeseis
+                               + "<br>2017: " + d.properties.dezesete
+                                ).transition()
+                      .duration(500) // ms
+                      .style("opacity", 100);                   
+      }
 
-
-
-    var offsetL = document.getElementById('map').offsetLeft+10;
-    var offsetT = document.getElementById('map').offsetTop+10;
-
-    var tooltip = d3.select("#map")
-         .append("div")
-         .attr("class", "tooltip hidden");
-
+ var tipMouseOut = function(d) {
+                  d3.select(".tooltip").transition()
+                      .duration(500) // ms
+                      .style("opacity", 0); // don't care about position!
+              };
+/// zoom
 
 
    // when the input range changes update the rectangle 
@@ -243,14 +154,23 @@ d3.json("rioauto.json", function(error, aisp) {
         };
     }
 
-//     function initialState(data){
-//         if (document.getElementById("range").innerHTML == 2010) {
-//             if (data.properties.elect2000 == "D") {
-//                 return '#084594'
-//             } else {
-//                 return '#cb181d'
-//             }
-//         };
+    function initialState(data){
+        if (document.getElementById("range").innerHTML == 2017) {
+            if (aisp.properties.dez < "10") {
+                return 'blue'
+            }
+            if (aisp.properties.dez > "11" && aisp.properties.onze < "30") {
+                return 'yellow'
+            }
+            if (aisp.properties.dez >= "30") {
+                return 'red'
+            }
+             else {
+                return 'pink'
+            }
+        };
 
-// }
+}
+
+
 </script>
