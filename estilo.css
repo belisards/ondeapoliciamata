@@ -1,10 +1,78 @@
-.tooltip {
-  padding: 0.5rem;
+    a {
+        color: yellow;
+    }
+
+
+
+    h1{
+    font-family: 'Open Sans';
+    font-weight: 300;
+    text-align: center;
+    top: 45%;
+    right: 0;
+    left: 0;
+    }
+
+
+    h3{
+    font-family: 'Open Sans';
+    text-align: center;
+    top: 5%;
+    right: 0;
+    left: 0;
+    }
+
+
+    h4{
+    font-family: 'Open Sans';
+    font-size: 1em ;
+    }
+
+
+    .top {
+    margin: auto;
+    width: 40%;
+    }
+
+    .top img { 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+     }
+
+     h3 {
+    font-size: 1.2em;
+
+     }
+
+    .regiao {
+      fill: #99AAAA;
+    }
+
+
+.footer {
+    text-align: center;
+    color: black;
 }
 
-.sliderConainer {
-  display: inline-block;
+.footer p {
+    font-family: 'Open Sans';
+    color: white;
+    font-size: 1em;
 }
+
+.tooltip {
+  opacity: 0;
+  background: #771a1a;
+  margin-top: 10px;
+  padding: 0.5rem;
+  float: left;
+  position: absolute;
+  font-family: 'Open Sans';
+  font-size: 1.4em;
+}
+
 
 
 body {
@@ -12,7 +80,7 @@ body {
     height: 90vh;
     color: #fff;
     background: linear-gradient(-45deg, #000,  #c30101);
-    background-size: 200% 200%;
+    background-size: 400% 400%;
     -webkit-animation: Gradient 25s ease infinite;
     -moz-animation: Gradient 45s ease infinite;
     animation: Gradient 15s ease infinite;
@@ -54,23 +122,6 @@ body {
     }
 }
 
-    h1{
-    font-family: 'Open Sans';
-    font-weight: 300;
-    text-align: center;
-    top: 45%;
-    right: 0;
-    left: 0;
-    }
-
-
-    h3{
-    font-family: 'Open Sans';
-    text-align: center;
-    top: 5%;
-    right: 0;
-    left: 0;
-    }
 
     .svg-container {
     display: inline-block;
@@ -83,18 +134,10 @@ body {
 
     .svg-content-responsive {
         display: inline-block;
-        position: absolute;
+        position: relative;
         top: 15%;
         left: 0;
     }
-
-    .title {
-        display: inline-block;
-
-    }
-	.regiao {
-	  fill: #99AAAA;
-	}
 
 	.regiao :hover {
 	  fill: red;
@@ -108,3 +151,49 @@ body {
 	  stroke-linecap: round;
 	  pointer-events: none;
 	}
+
+.map { 
+    float: left;
+ }
+/* slider */
+
+.sliderContainer {  
+    position: relative;
+    top: 10%;
+    float: center;
+
+    }
+
+
+#timeslide {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 30%; /* Full-width */
+    height: 25px; /* Specified height */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+#timeslide:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+#timeslide::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: gray; 
+    cursor: pointer; /* Cursor on hover */
+}
+
+#timeslide::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: gray; 
+    cursor: pointer; /* Cursor on hover */
+}
