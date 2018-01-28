@@ -1,83 +1,42 @@
-    a {
-        color: yellow;
-    }
 
+/* Estilo geral */
 
-
-    h1{
-    font-family: 'Open Sans';
-    font-weight: 300;
-    text-align: center;
-    top: 45%;
-    right: 0;
-    left: 0;
-    }
-
-
-    h3{
-    font-family: 'Open Sans';
-    text-align: center;
-    top: 5%;
-    right: 0;
-    left: 0;
-    }
-
-
-    h4{
-    font-family: 'Open Sans';
+audio {
+    display: none;
+}
+    
+.header {
+    margin: auto;
+    width: 60%;
+        font-family: 'Open Sans';
     font-size: 1em ;
     }
 
 
-    .top {
-    margin: auto;
-    width: 40%;
+
+img.center {
+      display: block;
+       margin-left: auto;
+       margin-right: auto;
     }
-
-    .top img { 
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 40%;
-     }
-
-     h3 {
-    font-size: 1.2em;
-
-     }
-
-    .regiao {
-      fill: #99AAAA;
-    }
-
 
 .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #830101;
     text-align: center;
-    color: black;
-}
-
-.footer p {
     font-family: 'Open Sans';
     color: white;
     font-size: 1em;
 }
 
-.tooltip {
-  opacity: 0;
-  background: #771a1a;
-  margin-top: 10px;
-  padding: 0.5rem;
-  float: left;
-  position: absolute;
-  font-family: 'Open Sans';
-  font-size: 1.4em;
-}
-
-
 
 body {
     width: 100wh;
     height: 90vh;
+    padding: 1% 0.5%;
     color: #fff;
     background: linear-gradient(-45deg, #000,  #c30101);
     background-size: 400% 400%;
@@ -122,45 +81,94 @@ body {
     }
 }
 
-
-    .svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%; /* aspect ratio */
-    vertical-align: center;
-    overflow: hidden;
+/* Formata textos*/
+    a {
+        color: #f2b379;
     }
 
+
+    h1{
+    font-family: 'Open Sans';
+    font-weight: 300;
+    text-align: center;
+    top: 45%;
+    right: 0;
+    left: 0;
+    }
+
+
+    h3 {
+    font-family: 'Open Sans';
+    text-align: center;
+    font-size: 1.2em;
+    top: 5%;
+    right: 0;
+    left: 0;
+    }
+
+   h4, p {
+    font-family: 'Open Sans';
+    font-size: 1em;
+    right: 0;
+    left: 0;
+    }
+
+
+/* Legenda e tooltip */
+.legend { 
+    list-style: none; 
+    font-family: 'Open Sans';
+    font-size: 1.3em;
+
+}
+.legend li { float: left; margin-right: 10px; }
+.legend span { border: 1px solid black; float: left; width: 22px; height: 22px; margin-right: 5px; }
+/* your colors */
+.legend .zero { background-color: gray; }
+.legend .grau1 { background-color: #fdbb84; }
+.legend .grau2 { background-color: #e34a33; }
+.legend .grau3 { background-color: red; }
+
+
+.tooltip {
+  opacity: 0;
+  float: left;
+  font-family: 'Open Sans';
+  font-size: 0.8em;
+}
+
+
+ul {
+    padding: 0;
+}
+
+/*
+Mapa*/
     .svg-content-responsive {
-        display: inline-block;
-        position: relative;
-        top: 15%;
+        padding-top: 5%;
         left: 0;
     }
 
+    .regiao {
+      fill: #99AAAA;
+    }
+
 	.regiao :hover {
-	  fill: red;
+opacity: 0.7;
+    stroke-width: 3px;
+
 	}
 
-	.regiao-borda {
-	  fill: none;
-	  stroke: gray;
-	  stroke-width: 0.5px;
-	  stroke-linejoin: round;
-	  stroke-linecap: round;
-	  pointer-events: none;
-	}
 
-.map { 
-    float: left;
- }
-/* slider */
 
 .sliderContainer {  
-    position: relative;
     top: 10%;
+    width: 100%;
     float: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1;
 
     }
 
@@ -168,7 +176,6 @@ body {
 #timeslide {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
-    width: 30%; /* Full-width */
     height: 25px; /* Specified height */
     outline: none; /* Remove outline */
     opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */

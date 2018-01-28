@@ -1,80 +1,143 @@
+
 <!DOCTYPE html>
+
+<html lang="pt-br">
+
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Violência Policial,Autos de Resistência,Rio de Janeiro,Polícia Militar">
+    <meta name="author" content="Adriano Belisário - @belisards">
 
     <title>Onde A Polícia Mata?</title>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
+	
+    <!-- D3 -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://d3js.org/topojson.v2.min.js"></script>
+    
+    <!--    Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Nosso estilo -->
     <link href="estilo.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" type="text/css" />
-	</head>	
+    
+</head>	
 
 <body>
-	 <div class="top">
-    <img src="http://ondeapoliciamata.org/img/logo.png"></img>
-    <h3>Homicídios decorrentes de intervenção policial (autos de resistência) no Rio de Janeiro</h3>
+    <!--     POW! -->
+     <audio src="pow.ogg" controls autoplay>
+    <p>Seu navegador não suporta o elemento audio </p>
+    </audio>
+
+    <!--     Header -->
+    <div class="row">
+        <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
     </div>
 
+	 <div class="header">
+     <br />
+     <h3>Homicídios decorrentes de intervenção policial no Rio de Janeiro</h3>
+     </div>
 
-  <div id="sliderContainer">
-    <h4>Filtre por ano:</h4>
-        <input id="timeslide" type="range" min="0" max="4" value="0" step="1"/><br>
-        <span id="range">2017</span>
-    </div>
+    <div class="row">
+        <!-- Lateral esquerda -->
+        <div class="col-sm-2">
+        <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
+        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p>
 
-          <div class="tooltip"></div>
+        </div>
 
-   <div id="map"></div>
+        <!-- Mapa no centro -->
+        <div class="col-sm-8">
+            <div id="map"></div>   
+        </div>
+
+        <!--Lateral direita -->
+        <div class="col-sm-2">
+        <div id="sliderContainer">
+        <h4>Selecione o ano:</h4>
+            <input id="timeslide" type="range" min="0" max="4" value="4" step="1"/><br>
+            <span id="range">2014</span>
+        </div>
+        <div class="row">
+        <ul class="legend">
+            <br />
+            <li><span class="zero"></span> Zero mortes</li><br />
+            <li><span class="grau1"></span> Entre 1 e 36</li><br />
+            <li><span class="grau2"></span> Entre 36 e 100</li><br />
+            <li><span class="grau3"></span> Mais de 100</li><br />
+
+            <div class="tooltip"></div>
+        </ul>
+
+        </div>
+
+        </div>
+
+     </div>
+
+
+<!-- Rodapé -->    
+    <div class="footer">
+    <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
+     </div>
 
     </body>
 
-<div class="footer"><p>Realizado por: <a href="http://global.org.br" target="_blank"> Justiça Global </a></p>  
-<p>Desenvolvido <a href="http://github.com/belisards/ondeapoliciamata" target="_blank"> em código-aberto </a> por Adriano Belisário</p></div>
+    </html>
+
+<!-- Mapa -->
 
 <script>  
 
-// define var
-var width = 500;
-var height = 215;
+// Setup inicial
+var width = 700;
+var height = 300;
 
 var inputValue = null;
 var time = ["2010","2011","2012","2013","2014"];
 
 
-var projection = d3.geoMercator();
+var projection = d3.geoMercator()
+    .translate([width / 2, height / 2])
+    .scale((width - 1) / 2 / Math.PI);
+
+
 var path = d3.geoPath().projection(projection);
 
-// responsivo
 
 var svg = d3.select("#map")
-    .classed("svg-cont", true)
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 560 250")
+    .attr("viewBox", "0 0 700 300")
     .classed("svg-content-responsive", true)
-  .append("g");
-
-
-
+    // .call(d3.zoom().on("zoom", function () {
+    // svg.attr("transform", d3.event.transform)
+    // }))
+    ;
 
 d3.json("rioauto.json", function(error, aisp) {
 
         projection.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
-         
         svg.append("g")
           .attr("class", "regiao")
           .selectAll("path")
           .data(topojson.feature(aisp, aisp.objects.convert).features)
           .enter().append("path")
+          .attr( "fill", initialState )
           .attr("d", path) 
           .on('mouseover', tipMouseOver)
           .on("mouseout", tipMouseOut)
       }); 
 
 
-//tooltip
+// Tooltip com detalhes de cada AISP/Batalhão
 tipMouseOver = function(d, i) {
-        d3.select(".tooltip").html("<b>" + d.properties.AISP + "° Batalhão da PM</b>" 
+        d3.select(".tooltip").html("<br /><b>" + d.properties.AISP + "° Batalhão da PM</b>" 
                                + "<br>2010: " + d.properties.dez
                                + "<br>2011: " + d.properties.onze
                                + "<br>2012: " + d.properties.doze
@@ -91,12 +154,11 @@ tipMouseOver = function(d, i) {
  var tipMouseOut = function(d) {
                   d3.select(".tooltip").transition()
                       .duration(500) // ms
-                      .style("opacity", 0); // don't care about position!
+                      .style("opacity", 0); // 
               };
-/// zoom
 
 
-   // when the input range changes update the rectangle 
+// Atualiza as cores quando move o filtro 
     d3.select("#timeslide").on("input", function() {
         update(+this.value);
     });
@@ -111,73 +173,114 @@ tipMouseOver = function(d, i) {
 
     function timeMatch(aisp) {
         if (inputValue == "2010") {
-            if (aisp.properties.dez < "10") {
-                return 'blue'
+              if (aisp.properties.dez < "1") {
+                return 'gray'
             }
-            if (aisp.properties.dez > "11" && aisp.properties.onze < "30") {
-                return 'yellow'
+            if (aisp.properties.dez > "0" && aisp.properties.dez < "36") {
+                return '#fdbb84'
             }
-            if (aisp.properties.dez >= "30") {
+            if (aisp.properties.dez > "35" && aisp.properties.dez < "100") {
+                return '#e34a33'
+            }
+             if (aisp.properties.dez > "99") {
                 return 'red'
             }
              else {
-                return 'pink'
+                return 'black'
             }
 
         } else if (inputValue == "2011") {
 
-            if (aisp.properties.onze < "36") {
-                return '#fee8c8'
+          if (aisp.properties.onze < "1") {
+                return 'gray'
             }
-            if (aisp.properties.onze >= "24" && aisp.properties.onze < "100" ) {
+            if (aisp.properties.onze > "0" && aisp.properties.onze < "36") {
                 return '#fdbb84'
             }
-            if (aisp.properties.onze >= "100") {
+            if (aisp.properties.onze > "35" && aisp.properties.onze < "100") {
                 return '#e34a33'
             }
-             else {
-                return 'pink'
-            }
-
-        } else if (inputValue == "2012") {
-            if (aisp.properties.RISP == "1") {
-                return '#084594'
-            } else {
-                return '#cb181d'
-            }
-        // } else if (inputValue == "2013") {
-        //     if (data.properties.RISP == "4") {
-        //         return '#084594'
-        //     } else {
-        //         return '#cb181d'
-        //     }
-        // } else if (inputValue == "2014") {
-        //     if (data.properties.RISP == "5") {
-        //         return '#084594'
-        //     } else {
-        //         return '#cb181d'
-        //     }
-        };
-    }
-
-    function initialState(data){
-        if (document.getElementById("range").innerHTML == 2017) {
-            if (aisp.properties.dez < "10") {
-                return 'blue'
-            }
-            if (aisp.properties.dez > "11" && aisp.properties.onze < "30") {
-                return 'yellow'
-            }
-            if (aisp.properties.dez >= "30") {
+             if (aisp.properties.onze > "99") {
                 return 'red'
             }
              else {
-                return 'pink'
+                return 'black'
+            }
+
+        } else if (inputValue == "2012") {
+            
+            if (aisp.properties.doze < "1") {
+                return 'gray'
+            }
+            if (aisp.properties.doze > "0" && aisp.properties.doze < "36") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.doze > "35" && aisp.properties.doze < "100") {
+                return '#e34a33'
+            }
+             if (aisp.properties.doze > "99") {
+                return 'red'
+            }
+             else {
+                return 'black'
+            }
+        } 
+ else if (inputValue == "2013") {
+            
+            if (aisp.properties.treze < "1") {
+                return 'gray'
+            }
+            if (aisp.properties.treze > "0" && aisp.properties.treze < "36") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.treze > "35" && aisp.properties.treze < "100") {
+                return '#e34a33'
+            }
+             if (aisp.properties.treze > "99") {
+                return 'red'
+            }
+             else {
+                return 'black'
+            }
+        }
+        else if (inputValue == "2014") {
+            
+            if (aisp.properties.catorze < "1") {
+                return 'gray'
+            }
+            if (aisp.properties.catorze > "0" && aisp.properties.catorze < "36") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.catorze > "35" && aisp.properties.catorze < "100") {
+                return '#e34a33'
+            }
+             if (aisp.properties.catorze > "99") {
+                return 'red'
+            }
+             else {
+                return 'black'
             }
         };
+    }
 
+// Define valor padrão do timeslider
+    function initialState(data){
+        if (document.getElementById("range").innerHTML == 2014) {
+            if (data.properties.catorze < "1") {
+                return 'gray'
+            }
+            if (data.properties.catorze > "0" && data.properties.catorze < "36") {
+                return '#fdbb84'
+            }
+            if (data.properties.catorze > "35" && data.properties.catorze < "100") {
+                return '#e34a33'
+            }
+             if (data.properties.catorze > "99") {
+                return 'red'
+            }
+             else {
+                return 'black'
+            }
+        };
 }
-
-
-
 </script>
