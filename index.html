@@ -93,11 +93,11 @@
 <script>  
 
 // Setup inicial
-var width = 900;
-var height = 500;
+var width = 900,
+    height = 500,
+    centered;
 
-
-  const zoom = d3.zoom()
+const zoom = d3.zoom()
       .scaleExtent([1/4, 9])
       .on('zoom', function () {
         d3.select('g').attr('transform', d3.event.transform)
@@ -142,22 +142,49 @@ d3.json("rioauto.json", function(error, aisp) {
           .attr("d", path) 
           .on('mousemove', mousemoved)
           .on('mouseout', mousegone)
-        
+          .on('click', clicked)
       }); 
+
+/// Zoom no click
+function clicked(d) {
+  var x, y, k;
+
+  if (d && centered !== d) {
+    var centroid = path.centroid(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    centered = null;
+  }
+
+  g.selectAll("path")
+      .classed("active", centered && function(d) { return d === centered; });
+
+  g.transition()
+      .duration(1500)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      .style("stroke-width", 1.5 / k + "px");
+}
+
 
 /// Funções que lidam com a tooltip ao mover o mouse
   function mousemoved(d) {
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
-            .html("<br /><b>" + d.properties.AISP + "° Batalhão da PM</b>" 
-                               + "<br>2010: " + d.properties.dez
-                               + "<br>2011: " + d.properties.onze
-                               + "<br>2012: " + d.properties.doze
-                               + "<br>2013: " + d.properties.treze
-                               + "<br>2014: " + d.properties.catorze
-                               + "<br>2015: " + d.properties.quinze
-                               + "<br>2016: " + d.properties.dezeseis
-                               + "<br>2017: " + d.properties.dezesete
+            .html("<b>" + d.properties.AISP + "° Batalhão da PM</b>" 
+                               + "<br><b>2010</b>: " + "<div class='bar' style='width:" + d.properties.dez + ".1px;'>"+ d.properties.dez + "</div>" 
+                               + "<br><b>2011</b>: " + "<div class='bar' style='width:" + d.properties.onze + ".1px;'></div>" + d.properties.onze
+                               + "<br><b>2012</b>: " + "<div class='bar' style='width:" + d.properties.doze + ".1px;'></div>" + d.properties.doze
+                               + "<br><b>2013</b>: " + "<div class='bar' style='width:" + d.properties.treze + ".1px;'></div>" + d.properties.treze
+                                 + "<br><b>2014</b>: " + "<div class='bar' style='width:" + d.properties.catorze + ".1px;'></div>" + d.properties.catorze
+                                   + "<br><b>2015</b>: " + "<div class='bar' style='width:" + d.properties.quinze + ".1px;'></div>" + d.properties.quinze
+                                     + "<br><b>2016</b>: " + "<div class='bar' style='width:" + d.properties.dezesseis + ".1px;'></div>" + d.properties.dezesseis
+                                       + "<br><b>2017</b>: " + "<div class='bar' style='width:" + d.properties.dezesete + ".1px;'></div>" + d.properties.dezesete
                                );
         }
 
