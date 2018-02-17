@@ -4,6 +4,7 @@
 audio {
     display: none;
 }
+
     
 .header {
     margin: auto;
@@ -143,8 +144,15 @@ ul {
     padding: 0;
 }
 
-/*
-Mapa*/
+.sidebar {
+    left: 1%;
+}
+
+.map-container {
+    overflow: hidden;
+}
+
+
 
 .conteudo {
     padding-left: 2%;

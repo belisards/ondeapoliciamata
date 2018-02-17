@@ -28,10 +28,9 @@
 </head>	
 
 <body>
+<div class="site">
     <!--     POW! -->
-     <audio src="pow.ogg" controls autoplay>
-    <p>Seu navegador não suporta o elemento audio </p>
-    </audio>
+     <audio src="pow.ogg" controls autoplay></audio>
 
     <!--     Header -->
     <div class="row">
@@ -43,21 +42,19 @@
      <h3>Homicídios decorrentes de intervenção policial no Rio de Janeiro</h3>
      </div>
 
+<!-- 
+    <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
+        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> -->
+
     <div class="row conteudo">
-        <!-- Lateral esquerda -->
-        <div class="col-sm-2">
-        <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
-        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p>
-
-        </div>
-
-        <!-- Mapa no centro -->
-        <div class="col-sm-8">
-            <div id="map"></div>   
-        </div>
-
+        <!-- Mapa -->
+        <div class="col-sm-10 map-container">
+                    <div id="map">
+                    </div>
+                </div>   
+            
         <!--Lateral direita -->
-        <div class="col-sm-2">
+        <div class="col-sm-2 sidebar">
         <div id="sliderContainer">
         <h4>Selecione o ano:</h4>
             <input id="timeslide" type="range" min="0" max="4" value="4" step="1"/><br>
@@ -88,6 +85,7 @@
         <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
     </div>
     </footer>
+</div>
     </body>
 
     </html>
@@ -97,8 +95,8 @@
 <script>  
 
 // Setup inicial
-var width = 700;
-var height = 300;
+var width = 900;
+var height = 500;
 
 var inputValue = null;
 var time = ["2010","2011","2012","2013","2014"];
@@ -115,18 +113,31 @@ var path = d3.geoPath().projection(projection);
 var svg = d3.select("#map")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 700 300")
+    .attr("viewBox", "0 0 900 500")
     .classed("svg-content-responsive", true)
-    // .call(d3.zoom().on("zoom", function () {
-    // svg.attr("transform", d3.event.transform)
-    // }))
+    .call(d3.zoom()
+    .scaleExtent([1, 8])
+    .on("zoom", function () {
+     svg.attr("transform", d3.event.transform)
+    }))
     ;
+
+// var zoom = d3.zoom()
+//     .scaleExtent([1, 40])
+//     .translateExtent([[0,0], [width, height]])
+//     .on("zoom", zoomed);
+  
+//   svg.call(zoom);
+
+
+
+var g = svg.append("g");
 
 d3.json("rioauto.json", function(error, aisp) {
 
         projection.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
-        svg.append("g")
-          .attr("class", "regiao")
+        
+          g.attr("class", "regiao")
           .selectAll("path")
           .data(topojson.feature(aisp, aisp.objects.convert).features)
           .enter().append("path")
@@ -135,6 +146,10 @@ d3.json("rioauto.json", function(error, aisp) {
           .on('mouseover', tipMouseOver)
           .on("mouseout", tipMouseOut)
       }); 
+
+    //      function zoomed() {
+    //   g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    // }
 
 
 // Tooltip com detalhes de cada AISP/Batalhão
