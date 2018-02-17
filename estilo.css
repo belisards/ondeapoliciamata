@@ -131,12 +131,16 @@ body {
 .legend .grau2 { background-color: #e34a33; }
 .legend .grau3 { background-color: red; }
 
-
-.tooltip {
-  opacity: 0;
-  float: left;
+div.tooltip {
   font-family: 'Open Sans';
-  font-size: 0.8em;
+  font-size: 1.2em;
+  background-color: white;
+  color: black;
+  border: 0.5px solid;
+  border-color: gray;
+  opacity: 0.95;
+  position: absolute;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 2px 10px;
 }
 
 
@@ -217,3 +221,4 @@ opacity: 0.7;
     background: gray; 
     cursor: pointer; /* Cursor on hover */
 }
+

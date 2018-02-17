@@ -17,8 +17,6 @@
     
     <!--    Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
     <!-- Nosso estilo -->
@@ -98,6 +96,13 @@
 var width = 900;
 var height = 500;
 
+
+  const zoom = d3.zoom()
+      .scaleExtent([1/4, 9])
+      .on('zoom', function () {
+        d3.select('g').attr('transform', d3.event.transform)
+      });
+
 var inputValue = null;
 var time = ["2010","2011","2012","2013","2014"];
 
@@ -115,22 +120,14 @@ var svg = d3.select("#map")
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0 0 900 500")
     .classed("svg-content-responsive", true)
-    .call(d3.zoom()
-    .scaleExtent([1, 8])
-    .on("zoom", function () {
-     svg.attr("transform", d3.event.transform)
-    }))
+    .call(zoom)
     ;
 
-// var zoom = d3.zoom()
-//     .scaleExtent([1, 40])
-//     .translateExtent([[0,0], [width, height]])
-//     .on("zoom", zoomed);
-  
-//   svg.call(zoom);
 
+var tooltip = d3.select('#map').append('div')
+              .attr('class', 'hidden tooltip');
 
-
+/// Começa a desenhar o mapa
 var g = svg.append("g");
 
 d3.json("rioauto.json", function(error, aisp) {
@@ -143,18 +140,16 @@ d3.json("rioauto.json", function(error, aisp) {
           .enter().append("path")
           .attr( "fill", initialState )
           .attr("d", path) 
-          .on('mouseover', tipMouseOver)
-          .on("mouseout", tipMouseOut)
+          .on('mousemove', mousemoved)
+          .on('mouseout', mousegone)
+        
       }); 
 
-    //      function zoomed() {
-    //   g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-    // }
-
-
-// Tooltip com detalhes de cada AISP/Batalhão
-tipMouseOver = function(d, i) {
-        d3.select(".tooltip").html("<br /><b>" + d.properties.AISP + "° Batalhão da PM</b>" 
+/// Funções que lidam com a tooltip ao mover o mouse
+  function mousemoved(d) {
+          tooltip.classed('hidden', false)
+            .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
+            .html("<br /><b>" + d.properties.AISP + "° Batalhão da PM</b>" 
                                + "<br>2010: " + d.properties.dez
                                + "<br>2011: " + d.properties.onze
                                + "<br>2012: " + d.properties.doze
@@ -163,17 +158,12 @@ tipMouseOver = function(d, i) {
                                + "<br>2015: " + d.properties.quinze
                                + "<br>2016: " + d.properties.dezeseis
                                + "<br>2017: " + d.properties.dezesete
-                                ).transition()
-                      .duration(500) // ms
-                      .style("opacity", 100);                   
-      }
+                               );
+        }
 
- var tipMouseOut = function(d) {
-                  d3.select(".tooltip").transition()
-                      .duration(500) // ms
-                      .style("opacity", 0); // 
-              };
-
+  function mousegone() {
+            tooltip.classed('hidden', true);
+}
 
 // Atualiza as cores quando move o filtro 
     d3.select("#timeslide").on("input", function() {
