@@ -46,20 +46,24 @@
 
     <div class="row conteudo">
         <!-- Mapa -->
-                <div class="col-sm-1">
+        <div class="col-sm-10">
+                 
 
-          <div class="dados">
-                    </div>
-                  </div>
-        <div class="col-sm-9 map-container">
+          <div class="row map-container">
                     <div id="map">
                     </div>
+                  </div>
+
                 </div>   
             
         <!--Lateral direita -->
         <div class="col-sm-2 sidebar">
-        <div id="sliderContainer">
-        <h4>Selecione o ano:</h4>
+                    <div class="dados">
+                    </div>
+                  
+        <div class="sliderContainer">
+          <hr>
+        <h4>SELECIONE O ANO:</h4>
             <input id="timeslide" type="range" min="0" max="4" value="4" step="1"/><br>
             <span id="range">2014</span>
         </div>
@@ -70,8 +74,6 @@
             <li><span class="grau1"></span> Entre 1 e 36</li><br />
             <li><span class="grau2"></span> Entre 36 e 100</li><br />
             <li><span class="grau3"></span> Mais de 100</li><br />
-
-            <div class="tooltip"></div>
         </ul>
 
         </div>
@@ -99,7 +101,7 @@
 
 // Setup inicial
 var width = 900,
-    height = 500,
+    height = 400,
     centered;
 
 const zoom = d3.zoom()
@@ -123,7 +125,7 @@ var path = d3.geoPath().projection(projection);
 var svg = d3.select("#map")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 900 500")
+    .attr("viewBox", "0 0 900 400")
     .classed("svg-content-responsive", true)
     .call(zoom)
     ;
@@ -156,32 +158,26 @@ d3.json("rioauto.json", function(error, aisp) {
 // tooltip superior
 
 tipMouseOver = function(d, i) {
-        d3.select(".dados").html("<h2>" + d.properties.AISP + "° batalhão</h2>" 
-                               + "<br><b>2010</b>: " + "<div class='bar' style='width:" + d.properties.dez + ".1px;'>"+ d.properties.dez + "</div>" 
-                               + "<br><b>2011</b>: " + "<div class='bar' style='width:" + d.properties.onze + ".1px;'></div>" + d.properties.onze
-                               + "<br><b>2012</b>: " + "<div class='bar' style='width:" + d.properties.doze + ".1px;'></div>" + d.properties.doze
-                               + "<br><b>2013</b>: " + "<div class='bar' style='width:" + d.properties.treze + ".1px;'></div>" + d.properties.treze
-                                 + "<br><b>2014</b>: " + "<div class='bar' style='width:" + d.properties.catorze + ".1px;'></div>" + d.properties.catorze
-                                   + "<br><b>2015</b>: " + "<div class='bar' style='width:" + d.properties.quinze + ".1px;'></div>" + d.properties.quinze
-                                     + "<br><b>2016</b>: " + "<div class='bar' style='width:" + d.properties.dezesseis + ".1px;'></div>" + d.properties.dezesseis
-                                       + "<br><b>2017</b>: " + "<div class='bar' style='width:" + d.properties.dezesete + ".1px;'></div>" + d.properties.dezesete
-                               ).transition()
-                      .duration(500) // ms
-                      .style("opacity", 100);                   
+        d3.select(".dados").html("<h4><b>" + d.properties.AISP + "° batalhão</b></h4>" 
+                               + "2010: " + "<div class='bar' style='width:" + d.properties.dez + ".1px;'>"+ d.properties.dez + "</div>" 
+                               + "<br>2011: " + "<div class='bar' style='width:" + d.properties.onze + ".1px;'></div>" + d.properties.onze
+                               + "<br>2012: " + "<div class='bar' style='width:" + d.properties.doze + ".1px;'></div>" + d.properties.doze
+                               + "<br>2013: " + "<div class='bar' style='width:" + d.properties.treze + ".1px;'></div>" + d.properties.treze
+                                 + "<br>2014: " + "<div class='bar' style='width:" + d.properties.catorze + ".1px;'></div>" + d.properties.catorze
+                                   + "<br>2015: " + "<div class='bar' style='width:" + d.properties.quinze + ".1px;'></div>" + d.properties.quinze
+                                     + "<br>2016: " + "<div class='bar' style='width:" + d.properties.dezesseis + ".1px;'></div>" + d.properties.dezesseis
+                                       + "<br>2017: " + "<div class='bar' style='width:" + d.properties.dezesete + ".1px;'></div>" + d.properties.dezesete
+                               );                   
       }
 
  var tipMouseOut = function(d) {
-                  d3.select(".dados").transition()
-                      .duration(500) // ms
-                      .style("opacity", 0); // 
+                  d3.select(".dados").style("opacity", 0); // 
 };
 
 /// fim tooltip
 
 /// Funções que lidam com a tooltip ao mover o mouse
   function mousemoved(d) {
-                  
-
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
             .html("<b>Bairros</b>: " +  d.properties.bairros
@@ -189,9 +185,7 @@ tipMouseOver = function(d, i) {
         }
 
   function mousegone() {
-    d3.select(".dados").transition()
-                      .duration(500) // ms
-                      .style("opacity", 0); // 
+    d3.select(".tooltip").style("opacity", 0); // 
             tooltip.classed('hidden', true);
 }
 

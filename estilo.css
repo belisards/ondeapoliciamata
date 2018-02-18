@@ -29,22 +29,21 @@ img.center {
     font-family: 'Open Sans';
     color: white;
     font-size: 1em;
-    position: fixed;
+    position: relative;
     display: inline-block;
 }
 
 html
 body {
-    overflow: hidden;
-    width: 100wh;
+    overflow-x: hidden;
     height: 100vh;
     padding-top: 1%;
     color: #fff;
     background: linear-gradient(-45deg, #000,  #c30101);
     background-size: 550% 550%;
-    -webkit-animation: Gradient 25s ease infinite;
-    -moz-animation: Gradient 45s ease infinite;
-    animation: Gradient 15s ease infinite;
+    -webkit-animation: Gradient 75s ease infinite;
+    -moz-animation: Gradient 75s ease infinite;
+    animation: Gradient 75s ease infinite;
 }
 
 @-webkit-keyframes Gradient {
@@ -151,6 +150,9 @@ ul {
     left: 1%;
     }
 
+#map {
+    height: 700px;
+}
 .map-container {
     overflow: hidden;
     }
@@ -184,7 +186,7 @@ opacity: 0.7;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    z-index: 1;
+    padding-top: 10px;
 
     }
 
@@ -197,6 +199,7 @@ opacity: 0.7;
     opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
+        padding-top: 5px;
 }
 
 /* Mouse-over effects */
@@ -231,7 +234,7 @@ opacity: 0.7;
   font-family: 'Open Sans';
   font-size: 1.2em;
   color: white;
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  height: 200px;
+  display: contents;
+  margin-bottom: 5px;
 }
