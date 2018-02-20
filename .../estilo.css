@@ -1,9 +1,6 @@
 
-/* Estilo geral */
 
-audio {
-    display: none;
-}
+/* Estilo geral */
 
     
 .header {
@@ -37,50 +34,15 @@ html
 body {
     overflow-x: hidden;
     height: 100vh;
-    padding-top: 1%;
+    padding: 1%;
     color: #fff;
     background: linear-gradient(-45deg, #000,  #c30101);
     background-size: 550% 550%;
-    -webkit-animation: Gradient 75s ease infinite;
+/*    -webkit-animation: Gradient 75s ease infinite;
     -moz-animation: Gradient 75s ease infinite;
-    animation: Gradient 75s ease infinite;
+    animation: Gradient 75s ease infinite;*/
 }
 
-@-webkit-keyframes Gradient {
-    0% {
-        background-position: 0% 50%
-    }
-    50% {
-        background-position: 100% 50%
-    }
-    100% {
-        background-position: 0% 50%
-    }
-}
-
-@-moz-keyframes Gradient {
-    0% {
-        background-position: 0% 50%
-    }
-    50% {
-        background-position: 100% 50%
-    }
-    100% {
-        background-position: 0% 50%
-    }
-}
-
-@keyframes Gradient {
-    0% {
-        background-position: 0% 50%
-    }
-    50% {
-        background-position: 100% 50%
-    }
-    100% {
-        background-position: 0% 50%
-    }
-}
 
 /* Formata textos*/
     a {
@@ -121,6 +83,7 @@ body {
     font-family: 'Open Sans';
     font-size: 1.3em;
 
+
 }
 .legend li { float: left; margin-right: 10px; }
 .legend span { border: 1px solid black; float: left; width: 22px; height: 22px; margin-right: 5px; }
@@ -144,23 +107,19 @@ div.tooltip {
 
 ul {
     padding: 0;
+    list-style: none
     }
 
+li {
+    display: inline;
+}
 .sidebar {
     left: 1%;
     }
 
-#map {
-    height: 700px;
-}
-.map-container {
-    overflow: hidden;
-    }
 
 
-.conteudo {
-    padding-left: 2%;
-    }
+
 
     .svg-content-responsive {
         padding-top: 1%;
@@ -168,15 +127,6 @@ ul {
         left: 0;
     }
 
-    .regiao {
-      fill: #99AAAA;
-    }
-
-	.regiao :hover {
-opacity: 0.7;
-    stroke-width: 3px;
-
-	}
 
 
 .sliderContainer {  
@@ -209,7 +159,6 @@ opacity: 0.7;
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 #timeslide::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
     appearance: none;
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
@@ -228,6 +177,7 @@ opacity: 0.7;
     background-color:black; 
     height: 3px;
     border: red 1px;
+    overflow: hidden;
 }
 
 .dados {
@@ -237,4 +187,22 @@ opacity: 0.7;
   height: 200px;
   display: contents;
   margin-bottom: 5px;
+}
+
+.expand {
+}
+
+.conteudo {
+    position: relative; 
+    margin: .5em;
+}
+
+/* desabilita seleção de texto*/    
+svg text {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
 }

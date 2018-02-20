@@ -1,45 +1,65 @@
-	<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
+
   <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Violência Policial,Autos de Resistência,Rio de Janeiro,Polícia Militar">
     <meta name="author" content="Adriano Belisário - @belisards">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link href="style.css" rel="stylesheet">
 
-    <title>Onde a Polícia Mata?</title>
-
+    <title>Onde A Polícia Mata?</title>
+	
     <!-- D3 -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://d3js.org/topojson.v2.min.js"></script>
+	  <script src="https://d3js.org/topojson.v2.min.js"></script>
+    
+
+    <!-- Nosso estilo -->
+    <link href="estilo.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" type="text/css" />
 
-  </head>
-  
-  <body>
-    <header>
+    
+  </head>	
+
+<body>
+
+
+    <!--     Header -->
+       <div class="header">
+    <div class="row">
         <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
+    </div>
 
+     <br />
      <h3>Homicídios decorrentes de intervenção policial no Rio de Janeiro <a class="expand" href="#">[ + ]</a></h3>
-    </header>
+     </div>
 
-  	<div class="columnsContainer">
+<!-- 
+    <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
+        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> -->
 
-	  	<div class="leftColumn">
+
+        <div class="conteudo">
+                <!-- Mapa -->
+          <div class="row map-container">
                     <div id="map">
                     </div>
-	  	</div>
-
-	  	<div class="rightColumn">
-	  	    <div class="sliderContainer">
-
-
-
+                  </div>
+      <div class="sidebar">
+      
+        <div class="sliderContainer">
         <h4>SELECIONE O ANO:</h4>
-            <input id="timeslide" type="range" min="0" max="7" value="7" step="1"/><br>
-            <span id="range">2017</span>
+            <input id="timeslide" type="range" min="0" max="4" value="4" step="1"/><br>
+            <span id="range">2014</span>
         </div>
-   <ul class="legend">
+       
+        <div class="dados">
+                    </div>
+        </div>
+
+           <div class="legenda">
+        <ul class="legend">
             <br />
             <li><span class="zero"></span> Sem homicídios</li><br />
             <li><span class="grau1"></span> Entre 1 e 36</li><br />
@@ -47,25 +67,28 @@
             <li><span class="grau3"></span> Mais de 100</li><br />
         </ul>
 
-                <div class="dados">
-                    </div>
-    
         </div>
 
-           
+  
+          
 
-	  	</div>
+      </div>
+  </div>
+      
 
-  	</div>
-    
-    <footer>
 
+<!-- Rodapé -->    
+    <footer class="footer">
+      <div class="container">
+        
         <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
-  	</footer>
+    </div>
+    </footer>
+    </body>
 
-  </body>
-</html>
+    </html>
 
+<!-- Mapa -->
 
 <script>  
 
@@ -81,7 +104,7 @@ const zoom = d3.zoom()
       });
 
 var inputValue = null;
-var time = ["2010","2011","2012","2013","2014", "2015", "2016", "2017"];
+var time = ["2010","2011","2012","2013","2014"];
 
 
 var projection = d3.geoMercator()
@@ -107,13 +130,13 @@ var tooltip = d3.select('#map').append('div')
 /// Começa a desenhar o mapa
 var g = svg.append("g");
 
-d3.json("autoresistenciario.json", function(error, aisp) {
+d3.json("rioauto.json", function(error, aisp) {
 
-        projection.fitSize([width,height], topojson.feature(aisp, aisp.objects.LIMITE_AISP));
+        projection.fitSize([width,height], topojson.feature(aisp, aisp.objects.convert));
         
           g.attr("class", "regiao")
           .selectAll("path")
-          .data(topojson.feature(aisp, aisp.objects.LIMITE_AISP).features)
+          .data(topojson.feature(aisp, aisp.objects.convert).features)
           .enter().append("path")
           .attr( "fill", initialState )
           .attr("d", path) 
@@ -129,7 +152,14 @@ d3.json("autoresistenciario.json", function(error, aisp) {
 
 tipMouseOver = function(d, i) {
         d3.select(".dados").html("<h4><b>" + d.properties.AISP + "° batalhão</b></h4>" 
-                               + "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2016: " +  d.properties.dezesseis + "<br>2017: " +  d.properties.dezesete 
+                               + "<div class='anos'>" + 2010 + "<div class='bar' style='width:" + d.properties.dez + ".1px;'>"+ d.properties.dez + "</div>" 
+                               + "<br>2011: " + "<div class='bar' style='width:" + d.properties.onze + ".1px;'></div>" + d.properties.onze
+                               + "<br>2012: " + "<div class='bar' style='width:" + d.properties.doze + ".1px;'></div>" + d.properties.doze
+                               + "<br>2013: " + "<div class='bar' style='width:" + d.properties.treze + ".1px;'></div>" + d.properties.treze
+                                 + "<br>2014: " + "<div class='bar' style='width:" + d.properties.catorze + ".1px;'></div>" + d.properties.catorze
+                                   + "<br>2015: " + "<div class='bar' style='width:" + d.properties.quinze + ".1px;'></div>" + d.properties.quinze
+                                     + "<br>2016: " + "<div class='bar' style='width:" + d.properties.dezesseis + ".1px;'></div>" + d.properties.dezesseis
+                                       + "<br>2017: " + "<div class='bar' style='width:" + d.properties.dezesete + ".1px;'></div></div>" + d.properties.dezesete
                                );                   
       }
 
@@ -143,7 +173,7 @@ tipMouseOver = function(d, i) {
   function mousemoved(d) {
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
-            .html("<b>Bairros</b>: " +  d.properties.bairros + "<br><br><b>Total (2010-17)</b>:<p class='total'>" + d.properties.Total + "</p>"
+            .html("<b>Bairros</b>: " +  d.properties.bairros
                                );
         }
 
@@ -286,71 +316,12 @@ function clicked(d) {
              else {
                 return 'black'
             }
-        }
-      else if (inputValue == "2015") {
-            
-            if (aisp.properties.catorze < "1") {
-                return 'gray'
-            }
-            if (aisp.properties.catorze > "0" && aisp.properties.catorze < "36") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.catorze > "35" && aisp.properties.catorze < "100") {
-                return '#e34a33'
-            }
-             if (aisp.properties.catorze > "99") {
-                return 'red'
-            }
-             else {
-                return 'black'
-            }
-        }
-
-        else if (inputValue == "2016") {
-            
-            if (aisp.properties.catorze < "1") {
-                return 'gray'
-            }
-            if (aisp.properties.catorze > "0" && aisp.properties.catorze < "36") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.catorze > "35" && aisp.properties.catorze < "100") {
-                return '#e34a33'
-            }
-             if (aisp.properties.catorze > "99") {
-                return 'red'
-            }
-             else {
-                return 'black'
-            }
-        }
-else if (inputValue == "2017") {
-            
-            if (aisp.properties.catorze < "1") {
-                return 'gray'
-            }
-            if (aisp.properties.catorze > "0" && aisp.properties.catorze < "36") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.catorze > "35" && aisp.properties.catorze < "100") {
-                return '#e34a33'
-            }
-             if (aisp.properties.catorze > "99") {
-                return 'red'
-            }
-             else {
-                return 'black'
-            }
-        }
-
-
-
-        ;
+        };
     }
 
 // Define valor padrão do timeslider
     function initialState(data){
-        if (document.getElementById("range").innerHTML == 2017) {
+        if (document.getElementById("range").innerHTML == 2014) {
             if (data.properties.catorze < "1") {
                 return 'gray'
             }
