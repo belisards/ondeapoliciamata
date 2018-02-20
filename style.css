@@ -55,6 +55,7 @@ body { margin: 0;
   position: fixed;
   width: 10%;
   padding: 2px; 
+  z-index: 9999;
 }
 
 .hidden {
