@@ -1,4 +1,13 @@
-	<html lang="pt-br">
+	<!-- TODO
+
+Chrolopeth
+Ajustar altura
+Limitar pan
+Botao zoom
+Responsivo
+   -->
+
+  <html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,13 +28,56 @@
   <body>
     <header>
         <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
-<button class="accordion">Homicídios decorrentes de intervenção policial no Rio de Janeiro [ + ]</button>
+
+    </div>
+    </header>
+
+
+      <div id="mapcont">
+
+      <div id="map">
+                    </div>
+                    </div>
+
+	  	<div class="menu">
+
+
+<button class="accordion">Homicídios decorrentes de intervenção policial no Rio de Janeiro [+]</button>
 <div class="panel">
  
 
     <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
-        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> 
-</div><!-- 
+        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p>    <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
+</div>
+	  	    <div class="sliderContainer">
+
+        <h4>SELECIONE O ANO:</h4>
+            <input id="timeslide" type="range" min="0" max="7" value="7" step="1"/><br>
+            <span id="range">2017</span>
+        </div>
+      
+   <div class="dados">
+                    </div>
+    
+        </div>
+
+           
+<div class="legend-cont">
+   <ul class="legend">
+            <br />
+            <li><span class="zero"></span> Sem homicídios</li><br />
+            <li><span class="grau1"></span> Entre 1 e 36</li><br />
+            <li><span class="grau2"></span> Entre 36 e 100</li><br />
+            <li><span class="grau3"></span> Mais de 100</li><br />
+        </ul>
+      </div>
+	  	</div>
+
+
+  </body>
+</html>
+
+<!-- 
 acordeao -->
 <script>
 var acc = document.getElementsByClassName("accordion");
@@ -43,58 +95,13 @@ for (i = 0; i < acc.length; i++) {
   });
 }
 </script>
-
-    </header>
-
-  	<div class="columnsContainer">
-
-	  	<div class="leftColumn">
-                    <div id="map">
-                    </div>
-	  	</div>
-
-	  	<div class="rightColumn">
-	  	    <div class="sliderContainer">
-
-
-
-        <h4>SELECIONE O ANO:</h4>
-            <input id="timeslide" type="range" min="0" max="7" value="7" step="1"/><br>
-            <span id="range">2017</span>
-        </div>
-        
-                <div class="dados">
-                    </div>
-    
-   <ul class="legend">
-            <br />
-            <li><span class="zero"></span> Sem homicídios</li><br />
-            <li><span class="grau1"></span> Entre 1 e 36</li><br />
-            <li><span class="grau2"></span> Entre 36 e 100</li><br />
-            <li><span class="grau3"></span> Mais de 100</li><br />
-        </ul>
-
-        </div>
-
-           
-
-	  	</div>
-  <footer>
-        <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
-    </footer>
-  	</div>
-    
-  
-
-  </body>
-</html>
-
-
+<!-- 
+mapa -->
 <script>  
 
 // Setup inicial
-var width = 900,
-    height = 400,
+var width = window.innerWidth/2,
+    height = window.innerHeight/2,
     centered;
 
 
@@ -120,7 +127,7 @@ var path = d3.geoPath().projection(projection);
 var svg = d3.select("#map")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 900 400")
+    .attr("viewBox", "0 0 900 480")
     .classed("svg-content-responsive", true)
     .call(zoom)
     ;
@@ -153,8 +160,10 @@ d3.json("autoresistenciario.json", function(error, aisp) {
 // tooltip superior
 
 tipMouseOver = function(d, i) {
-        d3.select(".dados").html("<b>" + d.properties.AISP + "° batalhão</b><br>" 
-                               + "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2016: " +  d.properties.dezesseis + "<br>2017: " +  d.properties.dezesete 
+        d3.select(".dados").html("<br><b>" + d.properties.AISP + "° batalhão</b><br><b class='batalhao'>" 
+                               + 
+                               // "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2016: " +  d.properties.dezesseis +
+                                d.properties.Total +  " homicídios </b><br>entre 2010 e 2017" 
                                );                   
       }
 
@@ -168,7 +177,7 @@ tipMouseOver = function(d, i) {
   function mousemoved(d) {
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
-            .html("<b>Regiões</b>:<br> " +  d.properties.bairros + "<br><br><b>Total do " + d.properties.AISP + "° batalhão (2010-17)</b>:<p class='total'>" + d.properties.Total + "</p>"
+            .html("<br><b>Total do " + d.properties.AISP + "° batalhão em " + document.getElementById("range").innerHTML  + ":</b><br> "+ d.properties.Total + "<br><b>Regiões</b>:<br> " +  d.properties.bairros
                                );
         }
 

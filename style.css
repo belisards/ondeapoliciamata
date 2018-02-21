@@ -6,35 +6,47 @@ body { margin: 0;
     overflow-x: hidden;
     height: 100vh;
     padding: 1%;
-    color: #fff;
+    color: black;
     font-family: 'Open Sans';
-    background: linear-gradient(-45deg, #000,  #c30101);
+    background: linear-gradient(-45deg, gray,  white);
     background-size: 550% 550%;}
 
-.columnsContainer { position: relative; margin: .5em; }
 
-footer {
+
+
+header {  text-align:center; padding: 0.25em; position: absolute; width: 100%;}
+
+header img { position: relative; }
+
+
+
+.wrap {
   position: relative;
 }
-
-.leftColumn, footer, header {  text-align:center; padding: 0.25em; }
-
-.leftColumn { margin-bottom: .5em; }
-
 
 
 /* MEDIA QUERIES */
 @media screen and (min-width: 47.5em ) {
   .leftColumn { margin-right: 19.5em; }
 
-   .rightColumn { text-align:left; position: absolute; top: 0; right: 0; width: 18.75em; }   
+   .menu { 
+
+    /* Fallback for web browsers that don't support RGBa */
+    background-color: rgb(252, 252, 252);
+    /* RGBa with 0.6 opacity */
+    background-color: rgba(252, 252, 252, 0.15);
+    text-align:left; padding-left: 10px; position: absolute; top: 15em; width: 20em;  }   
 }
 
     a {
-        color: #f2b379;
+        color: black;
     }
 
-
+.legend-cont { 
+ position: absolute;
+ bottom: 20px;
+ left: 20px;
+}
 .legend { 
     list-style: none; 
     font-family: 'Open Sans';
@@ -66,10 +78,10 @@ footer {
   display: none;
 }
 
-.total {
+.batalhao {
   font-size: 1.5em;
   padding: 0;
-  color: red;
+  color: #fc8d59;
   font-weight: bold;
 }
 
@@ -79,11 +91,19 @@ ul {
 
 .regiao path:hover {
 opacity: 0.7;
+stroke-width: 0.4px;    
+stroke: black;
+}
+
+.regiao path {
+
+      stroke: gray;
+      stroke-width: 0.2px;    }
+
+.regiao path {
+border: black;
     }
 
-.map-container {
-    overflow: hidden;
-    }
 
 .bar {
     background-color:black; 
@@ -95,7 +115,7 @@ opacity: 0.7;
 .dados {
   font-family: 'Open Sans';
   font-size: 1.2em;
-  color: white;
+  color: black;
   height: 200px;
   display: contents;
   padding-top: 5px;
@@ -113,8 +133,17 @@ svg text {
     user-select: none;
     pointer-events: none;
 }
+
+#mapcont {
+  width: 100%
+}
+
 /*
 timeslider*/
+
+.sliderContainer {
+  width: 50%;
+}
 
 input[type=range] {
   height: 34px;
@@ -211,13 +240,13 @@ acordeao*/
 
 .accordion {
     cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: center;
+    border: none ;
+    text-align: left;
+    left: 0;
     outline: none;
-    font-size: 1.5em  ;
+    font-size: 1em  ;
     transition: 0.4s;
+    width: 100%;
     background-color: transparent;
 } 
 
@@ -227,4 +256,7 @@ acordeao*/
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
+    background-color: white;
+    z-index: 9999;
+    position: absolute;
 }
