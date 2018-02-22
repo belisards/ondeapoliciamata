@@ -20,8 +20,17 @@ header img { position: relative; }
 
 
 
-.wrap {
-  position: relative;
+.zoom {
+    background-color: #fc8d59;
+    border: none;
+    color: white;
+    padding: 10px 22px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+
 }
 
 
