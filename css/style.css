@@ -20,7 +20,7 @@ body { margin: 0;
 
 header {  text-align:center; padding: 0.25em; position: relative; width: 100%;}
 
-header img { position: relative; }
+header img { position: relative; z-index: 999;}
 
 a {
         color: black;
