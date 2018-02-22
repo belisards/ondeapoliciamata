@@ -47,6 +47,9 @@ svg text {
 
 }
 
+.hidden {
+  display: none;
+}
 
 /* MEDIA QUERIES */
 @media screen and (min-width: 47.5em ) {
@@ -61,30 +64,30 @@ svg text {
 }
 
 
+/* labels */
 
-.legend-cont { 
+.label-cont { 
  position: absolute;
  bottom: 20px;
  left: 20px;
 }
-.zoom-cont { 
- position: absolute;
- bottom: 20px;
- right: 20px;
-}
-.legend { 
+
+.label { 
     list-style: none; 
     font-family: 'Open Sans';
     font-size: 1.3em;
 
 }
-.legend li { float: left; margin-right: 10px; }
-.legend span { border: 1px solid black; float: left; width: 22px; height: 22px; margin-right: 5px; }
-/* your colors */
-.legend .zero { background-color: gray; }
-.legend .grau1 { background-color: #fdbb84; }
-.legend .grau2 { background-color: #e34a33; }
-.legend .grau3 { background-color: red; }
+.label li { float: left; margin-right: 10px; }
+.label span { border: 1px solid black; float: left; width: 22px; height: 22px; margin-right: 5px; }
+.label .zero { background-color: gray; }
+.label .grau1 { background-color: #fef0d9; }
+.label .grau2 { background-color: #fdd49e; }
+.label .grau3 { background-color: #fdbb84; }
+.label .grau4 { background-color: #fc8d59; }
+.label .grau5 { background-color: #e34a33; }
+.label .grau6 { background-color: #b30000; }
+
 
 .tooltip {
   font-family: 'Open Sans';
@@ -99,9 +102,13 @@ svg text {
   z-index: 1;
 }
 
-.hidden {
-  display: none;
+
+.zoom-cont { 
+ position: absolute;
+ bottom: 20px;
+ right: 20px;
 }
+
 
 .batalhao {
   font-size: 1.5em;
@@ -111,15 +118,9 @@ svg text {
 }
 
 
-.regiao path:hover {
-opacity: 0.7;
-stroke-width: 0.4px;    
-stroke: black;
-}
 
 .regiao path:hover {
-opacity: 0.9;
-
+opacity: 0.8;
 }
 
 .regiao path {
@@ -160,7 +161,7 @@ border: black;
 timeslider*/
 
 .sliderContainer {
-  width: 50%;
+  width: 70%;
 }
 
 input[type=range] {

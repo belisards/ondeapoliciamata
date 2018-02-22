@@ -1,10 +1,16 @@
 	<!-- TODO
-
-Chrolopeth
-Ajustar altura
-Limitar pan
-Responsivo
+- Chrolopeth
+- Ajustar altura/posicao do mapa
+- Limitar pan
+- Melhorar responsividade
+- Colocar totalizado dos anos na timeline
+- Gráfico com a evolução ano/ano
+- Usar queque para carregar JSON e CSV separadamente
+- Colocar total de tudo na div dados ao carregar 
+- Usar tiles para localizar
+- Escala: 0; 1-20; 20-40; 40-60; 80-100; 100-120
    -->
+
 
   <html lang="pt-br">
   <head>
@@ -13,71 +19,21 @@ Responsivo
     <meta name="keywords" content="Violência Policial,Autos de Resistência,Rio de Janeiro,Polícia Militar">
     <meta name="author" content="Adriano Belisário - @belisards">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link href="style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <title>Onde a Polícia Mata?</title>
 
     <!-- D3 -->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://d3js.org/topojson.v2.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" type="text/css" />
+    <script src="js/d3.v4.min.js"></script>
+    <script src="js/topojson.v2.min.js"></script>
+    <link rel="stylesheet" href="css/fonte.css" type="text/css" />
 
   </head>
   
   <body>
     <header>
         <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
-
-    </div>
-    </header>
-
-
-      <div id="mapcont">
-
-      <div id="map">
-                    </div>
-                    </div>
-
-	  	<div class="menu">
-
-
-<button class="accordion">Homicídios decorrentes de intervenção policial no Rio de Janeiro [+]</button>
-<div class="panel">
- 
-
-    <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
-        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p>    <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
-</div>
-	  	    <div class="sliderContainer">
-<button class="zoom" id="zoom-in">+</button>
-<button class="zoom" id="zoom-out">-</button>
-        <h4>SELECIONE O ANO:</h4>
-            <input id="timeslide" type="range" min="0" max="7" value="7" step="1"/><br>
-            <span id="range">2017</span>
-        </div>
-      
-   <div class="dados">
-                    </div>
     
-        </div>
-
-           
-<div class="legend-cont">
-
-   <ul class="legend">
-            <br />
-            <li><span class="zero"></span> Sem homicídios</li><br />
-            <li><span class="grau1"></span> Entre 1 e 36</li><br />
-            <li><span class="grau2"></span> Entre 36 e 100</li><br />
-            <li><span class="grau3"></span> Mais de 100</li><br />
-        </ul>
-      </div>
-	  	</div>
-
-
-  </body>
-</html>
-
 <!-- 
 acordeao -->
 <script>
@@ -96,6 +52,69 @@ for (i = 0; i < acc.length; i++) {
   });
 }
 </script>
+
+    </header>
+
+
+      <div id="mapcont">
+
+      <div id="map">
+                    </div>
+                    </div>
+
+	  	<div class="menu">
+
+<button class="accordion">Homicídios decorrentes de intervenção policial no Rio de Janeiro [+]</button>
+<div class="panel">
+ 
+
+    <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
+        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p>    <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
+</div>
+	  	    <div class="sliderContainer">
+        <h4>SELECIONE O ANO:</h4>
+            <input id="timeslide" type="range" min="0" max="8" value="8" step="1"/><br>
+            <span id="range">Total</span>
+        </div>
+      
+   <div class="dados">
+                    </div>
+    
+        </div>
+
+           
+<div class="label-cont">
+ <ul class="label label-total">
+            <br />
+            <li><span class="zero"></span> Sem homicídios</li><br />
+            <li><span class="grau1"></span> Entre 0 e 50</li><br />
+            <li><span class="grau2"></span> Entre 51 e 100</li><br />
+            <li><span class="grau3"></span> Entre 100 e 200</li><br />
+            <li><span class="grau4"></span> Entre 200 e 350</li><br />
+            <li><span class="grau5"></span> Entre 350 e 500</li><br />
+            <li><span class="grau6"></span> Mais de 500</li><br />
+        </ul>
+   <ul class="label label-ano hidden">
+            <br />
+            <li><span class="zero"></span> Sem homicídios</li><br />
+            <li><span class="grau1"></span> Entre 0 e 20</li><br />
+            <li><span class="grau2"></span> Entre 21 e 40</li><br />
+            <li><span class="grau3"></span> Entre 41 e 60</li><br />
+            <li><span class="grau4"></span> Entre 80 e 61</li><br />
+            <li><span class="grau5"></span> Entre 81 e 99</li><br />
+            <li><span class="grau6"></span> Mais de 100</li><br />
+        </ul>
+      </div>
+
+
+<div class="zoom-cont">
+<button class="zoom" id="zoom-in">+</button>
+<button class="zoom" id="zoom-out">-</button>
+</div>
+
+  </body>
+</html>
+
 <!-- 
 mapa -->
 <script>  
@@ -104,8 +123,6 @@ mapa -->
 var width = window.innerWidth/2,
     height = window.innerHeight/2,
     centered;
-
-
 
 const zoom = d3.zoom()
       .scaleExtent([1, 4])
@@ -131,7 +148,7 @@ d3.select('#zoom-out').on('click', function() {
 
 
 var inputValue = null;
-var time = ["2010","2011","2012","2013","2014", "2015", "2016", "2017"];
+var time = ["2010","2011","2012","2013","2014", "2015", "2016", "2017", "Total"];
 
 
 var projection = d3.geoMercator()
@@ -198,7 +215,7 @@ tipMouseOver = function(d, i) {
             .html(
              //  "<br><b>Total do " + d.properties.AISP + "° batalhão em " + document.getElementById("range").innerHTML  + ":</b><br> "+ d.properties.Total +
              // 
-             "<br><b>Regiões</b>:<br> " +  d.properties.bairros
+             "<b>Regiões</b>:<br> " +  d.properties.bairros
                                );
         }
 
@@ -237,8 +254,6 @@ function clicked(d) {
 /// Fim do Zoom
 
 
-
-
 // Atualiza as cores quando move o filtro 
     d3.select("#timeslide").on("input", function() {
         update(+this.value);
@@ -254,17 +269,27 @@ function clicked(d) {
 
     function timeMatch(aisp) {
         if (inputValue == "2010") {
-              if (aisp.properties.dez < "1") {
+        
+            if (aisp.properties.dez < "1") {
                 return 'gray'
             }
-            if (aisp.properties.dez > "0" && aisp.properties.dez < "36") {
-                return '#fdcc8a'
+            if (aisp.properties.dez > "0" && aisp.properties.dez <= "19") {
+                return '#fdd49e'
             }
-            if (aisp.properties.dez > "35" && aisp.properties.dez < "100") {
+            if (aisp.properties.dez >= "20" && aisp.properties.dez <= "39") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.dez >= "40" && aisp.properties.dez <= "59") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.dez >= "60" && aisp.properties.dez <= "79") {
                 return '#fc8d59'
             }
-             if (aisp.properties.dez > "99") {
-                return 'red'
+             if (aisp.properties.dez >= "80" && aisp.properties.dez <= "99") {
+                return '#e34a33'
+            }
+             if (aisp.properties.dez >= "100" && aisp.properties.dez <= "120") {
+                return '#b30000'
             }
              else {
                 return 'black'
@@ -275,68 +300,102 @@ function clicked(d) {
           if (aisp.properties.onze < "1") {
                 return 'gray'
             }
-            if (aisp.properties.onze > "0" && aisp.properties.onze < "36") {
-                return '#fdcc8a'
+            if (aisp.properties.onze > "0" && aisp.properties.onze <= "19") {
+                return '#fdd49e'
             }
-            if (aisp.properties.onze > "35" && aisp.properties.onze < "100") {
+            if (aisp.properties.onze >= "20" && aisp.properties.onze <= "39") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.onze >= "40" && aisp.properties.onze <= "59") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.onze >= "60" && aisp.properties.onze <= "79") {
                 return '#fc8d59'
             }
-             if (aisp.properties.onze > "99") {
-                return 'red'
+             if (aisp.properties.onze >= "80" && aisp.properties.onze <= "99") {
+                return '#e34a33'
+            }
+             if (aisp.properties.onze >= "100" && aisp.properties.onze <= "120") {
+                return '#b30000'
             }
              else {
                 return 'black'
             }
-
         } else if (inputValue == "2012") {
-            
-            if (aisp.properties.doze < "1") {
+          if (aisp.properties.doze < "1") {
                 return 'gray'
             }
-            if (aisp.properties.doze > "0" && aisp.properties.doze < "36") {
-                return '#fdcc8a'
+            if (aisp.properties.doze > "0" && aisp.properties.doze <= "19") {
+                return '#fdd49e'
             }
-            if (aisp.properties.doze > "35" && aisp.properties.doze < "100") {
+            if (aisp.properties.doze >= "20" && aisp.properties.doze <= "39") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.doze >= "40" && aisp.properties.doze <= "59") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.doze >= "60" && aisp.properties.doze <= "79") {
                 return '#fc8d59'
             }
-             if (aisp.properties.doze > "99") {
-                return 'red'
+             if (aisp.properties.doze >= "80" && aisp.properties.doze <= "99") {
+                return '#e34a33'
+            }
+             if (aisp.properties.doze >= "100" && aisp.properties.doze <= "120") {
+                return '#b30000'
             }
              else {
                 return 'black'
             }
-        } 
+        }
  else if (inputValue == "2013") {
-            
-            if (aisp.properties.treze < "1") {
+
+      
+             if (aisp.properties.treze < "1") {
                 return 'gray'
             }
-            if (aisp.properties.treze > "0" && aisp.properties.treze < "36") {
-                return '#fdcc8a'
+            if (aisp.properties.treze > "0" && aisp.properties.treze <= "19") {
+                return '#fdd49e'
             }
-            if (aisp.properties.treze > "35" && aisp.properties.treze < "100") {
+            if (aisp.properties.treze >= "20" && aisp.properties.treze <= "39") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.treze >= "40" && aisp.properties.treze <= "59") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.treze >= "60" && aisp.properties.treze <= "79") {
                 return '#fc8d59'
             }
-             if (aisp.properties.treze > "99") {
-                return 'red'
+             if (aisp.properties.treze >= "80" && aisp.properties.treze <= "99") {
+                return '#e34a33'
+            }
+             if (aisp.properties.treze >= "100" && aisp.properties.treze <= "120") {
+                return '#b30000'
             }
              else {
                 return 'black'
             }
         }
         else if (inputValue == "2014") {
-            
             if (aisp.properties.catorze < "1") {
                 return 'gray'
             }
-            if (aisp.properties.catorze > "0" && aisp.properties.catorze < "36") {
-                return '#fdcc8a'
+            if (aisp.properties.catorze > "0" && aisp.properties.catorze <= "19") {
+                return '#fdd49e'
             }
-            if (aisp.properties.catorze > "35" && aisp.properties.catorze < "100") {
+            if (aisp.properties.catorze >= "20" && aisp.properties.catorze <= "39") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.catorze >= "40" && aisp.properties.catorze <= "59") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.catorze >= "60" && aisp.properties.catorze <= "79") {
                 return '#fc8d59'
             }
-             if (aisp.properties.catorze > "99") {
-                return 'red'
+             if (aisp.properties.catorze >= "80" && aisp.properties.catorze <= "99") {
+                return '#e34a33'
+            }
+             if (aisp.properties.catorze >= "100" && aisp.properties.catorze <= "120") {
+                return '#b30000'
             }
              else {
                 return 'black'
@@ -344,17 +403,26 @@ function clicked(d) {
         }
       else if (inputValue == "2015") {
             
-            if (aisp.properties.quinze < "1") {
+         if (aisp.properties.quinze < "1") {
                 return 'gray'
             }
-            if (aisp.properties.quinze > "0" && aisp.properties.quinze < "36") {
-                return '#fdcc8a'
+            if (aisp.properties.quinze > "0" && aisp.properties.quinze <= "19") {
+                return '#fdd49e'
             }
-            if (aisp.properties.quinze > "35" && aisp.properties.quinze < "100") {
+            if (aisp.properties.quinze >= "20" && aisp.properties.quinze <= "39") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.quinze >= "40" && aisp.properties.quinze <= "59") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.quinze >= "60" && aisp.properties.quinze <= "79") {
                 return '#fc8d59'
             }
-             if (aisp.properties.quinze > "99") {
-                return 'red'
+             if (aisp.properties.quinze >= "80" && aisp.properties.quinze <= "99") {
+                return '#e34a33'
+            }
+             if (aisp.properties.quinze >= "100" && aisp.properties.quinze <= "120") {
+                return '#b30000'
             }
              else {
                 return 'black'
@@ -362,61 +430,119 @@ function clicked(d) {
         }
 
         else if (inputValue == "2016") {
-            
+          d3.select('.label-ano').classed('hidden', false);
+          d3.select('.label-total').classed('hidden', true);
             if (aisp.properties.dezesseis < "1") {
                 return 'gray'
             }
-            if (aisp.properties.dezesseis > "0" && aisp.properties.dezesseis < "36") {
-                return '#fdcc8a'
+            if (aisp.properties.dezesseis > "0" && aisp.properties.dezesseis <= "19") {
+                return '#fdd49e'
             }
-            if (aisp.properties.dezesseis > "35" && aisp.properties.dezesseis < "100") {
+            if (aisp.properties.dezesseis >= "20" && aisp.properties.dezesseis <= "39") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.dezesseis >= "40" && aisp.properties.dezesseis <= "59") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.dezesseis >= "60" && aisp.properties.dezesseis <= "79") {
                 return '#fc8d59'
             }
-             if (aisp.properties.dezesseis > "99") {
-                return 'red'
+             if (aisp.properties.dezesseis >= "80" && aisp.properties.dezesseis <= "99") {
+                return '#e34a33'
+            }
+             if (aisp.properties.dezesseis >= "100" && aisp.properties.dezesseis <= "120") {
+                return '#b30000'
             }
              else {
                 return 'black'
             }
         }
-else if (inputValue == "2017") {
-            
+
+
+         else if (inputValue == "2017") {
+          d3.select('.label-ano').classed('hidden', false);
+          d3.select('.label-total').classed('hidden', true);
             if (aisp.properties.dezesete < "1") {
                 return 'gray'
             }
-            if (aisp.properties.dezesete > "0" && aisp.properties.dezesete < "36") {
-                return '#fdcc8a'
+            if (aisp.properties.dezesete > "0" && aisp.properties.dezesete <= "20") {
+                return '#fdd49e'
             }
-            if (aisp.properties.dezesete > "35" && aisp.properties.dezesete < "100") {
+            if (aisp.properties.dezesete >= "21" && aisp.properties.dezesete <= "40") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.dezesete >= "41" && aisp.properties.dezesete <= "60") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.dezesete >= "61" && aisp.properties.dezesete <= "80") {
                 return '#fc8d59'
             }
-             if (aisp.properties.dezesete > "99") {
-                return 'red'
+             if (aisp.properties.dezesseis >= "81" && aisp.properties.dezesseis <= "99") {
+                return '#e34a33'
+            }
+             if (aisp.properties.dezesseis >= "100") {
+                return '#b30000'
             }
              else {
                 return 'black'
             }
         }
-
-
-
+    else if (inputValue == "Total") {
+          d3.select('.label-ano').classed('hidden', true);
+          d3.select('.label-total').classed('hidden', false);
+            if (aisp.properties.Total < "1") {
+                return 'gray'
+            }
+            if (aisp.properties.Total > "0" && aisp.properties.Total <= "50") {
+                return '#fef0d9'
+            }
+            if (aisp.properties.Total >= "50" && aisp.properties.Total <= "100") {
+                return '#fdd49e'
+            }
+            if (aisp.properties.Total >= "100" && aisp.properties.Total < "200") {
+                return '#fdbb84'
+            }
+            if (aisp.properties.Total >= "200" && aisp.properties.Total < "350") {
+                return '#fc8d59'
+            }
+             if (aisp.properties.Total >= "350" && aisp.properties.Total < "500") {
+                return '#e34a33'
+            }
+             if (aisp.properties.Total >= "500") {
+                return '#b30000'
+            }
+             else {
+                return 'black'
+            }
+        }
         ;
-    }
+    }  
 
 // Define valor padrão do timeslider
     function initialState(data){
-        if (document.getElementById("range").innerHTML == 2017) {
-            if (data.properties.dezesete < "1") {
+        if (document.getElementById("range").innerHTML == "Total") {
+         d3.select('.label-ano').classed('hidden', true);
+          d3.select('#label-total').classed('hidden', false);
+           if (data.properties.Total < "1") {
                 return 'gray'
             }
-            if (data.properties.dezesete > "0" && data.properties.dezesete < "36") {
-                return '#fdcc8a'
+            if (data.properties.Total > "0" && data.properties.Total <= "50") {
+                return '#fef0d9'
             }
-            if (data.properties.dezesete > "35" && data.properties.dezesete < "100") {
+            if (data.properties.Total >= "50" && data.properties.Total <= "100") {
+                return '#fdd49e'
+            }
+            if (data.properties.Total >= "100" && data.properties.Total < "200") {
+                return '#fdbb84'
+            }
+            if (data.properties.Total >= "200" && data.properties.Total < "350") {
                 return '#fc8d59'
             }
-             if (data.properties.dezesete > "99") {
-                return 'red'
+             if (data.properties.Total >= "350" && data.properties.Total < "500") {
+                return '#e34a33'
+            }
+             if (data.properties.Total >= "500" && data.properties.Total <= "560") {
+                return '#b30000'
             }
              else {
                 return 'black'
