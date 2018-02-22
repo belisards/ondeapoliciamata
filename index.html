@@ -1,9 +1,8 @@
 	<!-- TODO
-- Chrolopeth
+- Chrolopeth pra distribuir cores
 - Ajustar altura/posicao do mapa
 - Limitar pan
 - Melhorar responsividade
-- Colocar totalizado dos anos na timeline
 - Gráfico com a evolução ano/ano
 - Usar queque para carregar JSON e CSV separadamente
 - Colocar total de tudo na div dados ao carregar 
@@ -49,12 +48,24 @@ acordeao -->
 
 	  	<div class="menu">
 
-<button class="accordion">Homicídios decorrentes de intervenção policial no Rio de Janeiro [+]</button>
+	  	    <div class="sliderContainer">
+        <h4>SELECIONE O ANO:</h4>
+            <input id="timeslide" type="range" min="0" max="8" value="8" step="1"/><br>
+            <span id="range">Total (2011-2017)</span>
+        </div>
+      
+   <div class="dados">
+    <br>Todos batalhões da Polícia Militar causaram<br>
+    <b class="homicidios">5491</b><br> homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2011 e 2017<br>
+  </div>
+
+<br>
+<button class="accordion">Saiba mais [+]</button>
 <div class="panel">
  
 
     <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
-        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p>    <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
+        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes.<b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> <br> <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> <br> Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
 </div>
 
 <script>
@@ -73,16 +84,6 @@ for (i = 0; i < acc.length; i++) {
   });
 }
 </script>
-
-	  	    <div class="sliderContainer">
-        <h4>SELECIONE O ANO:</h4>
-            <input id="timeslide" type="range" min="0" max="8" value="8" step="1"/><br>
-            <span id="range">Total (2011-2017)</span>
-        </div>
-      
-   <div class="dados">
-                    </div>
-    
         </div>
 
            
@@ -198,11 +199,11 @@ d3.json("autoresistenciario.json", function(error, aisp) {
 // tooltip superior
 
 tipMouseOver = function(d, i) {
-        d3.select(".dados").html("<br><b>" + d.properties.AISP + "° batalhão</b><br><b class='batalhao'>" 
+        d3.select(".dados").html("<br>O <b>" + d.properties.AISP + "° batalhão</b> causou<br><b class='homicidios'>" 
                                // + 
                                // "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2017: " +  d.properties.dezesseis + 
                          +
-                                d.properties.Total +  " homicídios </b><br>entre 2010 e 2017" 
+                                d.properties.Total +  "</b><br>homicídios decorrentes de intervenção policial entre 2010 e 2017" 
                                );                   
       }
 
@@ -214,6 +215,7 @@ tipMouseOver = function(d, i) {
 
 /// Funções que lidam com a tooltip ao mover o mouse
   function mousemoved(d) {
+              d3.select('.panel').classed('hidden', true);
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
             .html(
