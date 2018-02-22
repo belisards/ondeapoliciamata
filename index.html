@@ -36,22 +36,7 @@
     
 <!-- 
 acordeao -->
-<script>
-var acc = document.getElementsByClassName("accordion");
-var i;
 
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight){
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
-}
-</script>
 
     </header>
 
@@ -71,10 +56,28 @@ for (i = 0; i < acc.length; i++) {
     <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
         <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. <b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p>    <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> | Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
 </div>
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+
 	  	    <div class="sliderContainer">
         <h4>SELECIONE O ANO:</h4>
             <input id="timeslide" type="range" min="0" max="8" value="8" step="1"/><br>
-            <span id="range">Total</span>
+            <span id="range">Total (2011-2017)</span>
         </div>
       
    <div class="dados">
@@ -87,21 +90,21 @@ for (i = 0; i < acc.length; i++) {
  <ul class="label label-total">
             <br />
             <li><span class="zero"></span> Sem homicídios</li><br />
-            <li><span class="grau1"></span> Entre 0 e 50</li><br />
-            <li><span class="grau2"></span> Entre 51 e 100</li><br />
-            <li><span class="grau3"></span> Entre 100 e 200</li><br />
-            <li><span class="grau4"></span> Entre 200 e 350</li><br />
-            <li><span class="grau5"></span> Entre 350 e 500</li><br />
+            <li><span class="grau1"></span> Entre 0 e 100</li><br />
+            <li><span class="grau2"></span> Entre 101 e 200</li><br />
+            <li><span class="grau3"></span> Entre 201 e 300</li><br />
+            <li><span class="grau4"></span> Entre 301 e 400</li><br />
+            <li><span class="grau5"></span> Entre 401 e 500</li><br />
             <li><span class="grau6"></span> Mais de 500</li><br />
         </ul>
    <ul class="label label-ano hidden">
             <br />
             <li><span class="zero"></span> Sem homicídios</li><br />
-            <li><span class="grau1"></span> Entre 0 e 20</li><br />
-            <li><span class="grau2"></span> Entre 21 e 40</li><br />
-            <li><span class="grau3"></span> Entre 41 e 60</li><br />
-            <li><span class="grau4"></span> Entre 80 e 61</li><br />
-            <li><span class="grau5"></span> Entre 81 e 99</li><br />
+            <li><span class="grau1"></span> Entre 0 e 19</li><br />
+            <li><span class="grau2"></span> Entre 20 e 39</li><br />
+            <li><span class="grau3"></span> Entre 40 e 59</li><br />
+            <li><span class="grau4"></span> Entre 60 e 79</li><br />
+            <li><span class="grau5"></span> Entre 80 e 100</li><br />
             <li><span class="grau6"></span> Mais de 100</li><br />
         </ul>
       </div>
@@ -196,8 +199,9 @@ d3.json("autoresistenciario.json", function(error, aisp) {
 
 tipMouseOver = function(d, i) {
         d3.select(".dados").html("<br><b>" + d.properties.AISP + "° batalhão</b><br><b class='batalhao'>" 
-                               + 
-                               // "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2016: " +  d.properties.dezesseis +
+                               // + 
+                               // "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2017: " +  d.properties.dezesseis + 
+                         +
                                 d.properties.Total +  " homicídios </b><br>entre 2010 e 2017" 
                                );                   
       }
@@ -271,7 +275,7 @@ function clicked(d) {
         if (inputValue == "2010") {
         
             if (aisp.properties.dez < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.dez > "0" && aisp.properties.dez <= "19") {
                 return '#fdd49e'
@@ -288,7 +292,7 @@ function clicked(d) {
              if (aisp.properties.dez >= "80" && aisp.properties.dez <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.dez >= "100" && aisp.properties.dez <= "120") {
+             if (aisp.properties.dez >= "100") {
                 return '#b30000'
             }
              else {
@@ -298,7 +302,7 @@ function clicked(d) {
         } else if (inputValue == "2011") {
 
           if (aisp.properties.onze < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.onze > "0" && aisp.properties.onze <= "19") {
                 return '#fdd49e'
@@ -315,7 +319,7 @@ function clicked(d) {
              if (aisp.properties.onze >= "80" && aisp.properties.onze <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.onze >= "100" && aisp.properties.onze <= "120") {
+             if (aisp.properties.onze >= "100") {
                 return '#b30000'
             }
              else {
@@ -323,7 +327,7 @@ function clicked(d) {
             }
         } else if (inputValue == "2012") {
           if (aisp.properties.doze < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.doze > "0" && aisp.properties.doze <= "19") {
                 return '#fdd49e'
@@ -340,7 +344,7 @@ function clicked(d) {
              if (aisp.properties.doze >= "80" && aisp.properties.doze <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.doze >= "100" && aisp.properties.doze <= "120") {
+             if (aisp.properties.doze >= "100") {
                 return '#b30000'
             }
              else {
@@ -351,7 +355,7 @@ function clicked(d) {
 
       
              if (aisp.properties.treze < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.treze > "0" && aisp.properties.treze <= "19") {
                 return '#fdd49e'
@@ -368,7 +372,7 @@ function clicked(d) {
              if (aisp.properties.treze >= "80" && aisp.properties.treze <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.treze >= "100" && aisp.properties.treze <= "120") {
+             if (aisp.properties.treze >= "100") {
                 return '#b30000'
             }
              else {
@@ -377,7 +381,7 @@ function clicked(d) {
         }
         else if (inputValue == "2014") {
             if (aisp.properties.catorze < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.catorze > "0" && aisp.properties.catorze <= "19") {
                 return '#fdd49e'
@@ -394,7 +398,7 @@ function clicked(d) {
              if (aisp.properties.catorze >= "80" && aisp.properties.catorze <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.catorze >= "100" && aisp.properties.catorze <= "120") {
+             if (aisp.properties.catorze >= "100") {
                 return '#b30000'
             }
              else {
@@ -404,7 +408,7 @@ function clicked(d) {
       else if (inputValue == "2015") {
             
          if (aisp.properties.quinze < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.quinze > "0" && aisp.properties.quinze <= "19") {
                 return '#fdd49e'
@@ -421,7 +425,7 @@ function clicked(d) {
              if (aisp.properties.quinze >= "80" && aisp.properties.quinze <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.quinze >= "100" && aisp.properties.quinze <= "120") {
+             if (aisp.properties.quinze >= "100") {
                 return '#b30000'
             }
              else {
@@ -433,7 +437,7 @@ function clicked(d) {
           d3.select('.label-ano').classed('hidden', false);
           d3.select('.label-total').classed('hidden', true);
             if (aisp.properties.dezesseis < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.dezesseis > "0" && aisp.properties.dezesseis <= "19") {
                 return '#fdd49e'
@@ -450,7 +454,7 @@ function clicked(d) {
              if (aisp.properties.dezesseis >= "80" && aisp.properties.dezesseis <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.dezesseis >= "100" && aisp.properties.dezesseis <= "120") {
+             if (aisp.properties.dezesseis >= "100") {
                 return '#b30000'
             }
              else {
@@ -463,7 +467,7 @@ function clicked(d) {
           d3.select('.label-ano').classed('hidden', false);
           d3.select('.label-total').classed('hidden', true);
             if (aisp.properties.dezesete < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.dezesete > "0" && aisp.properties.dezesete <= "20") {
                 return '#fdd49e'
@@ -477,10 +481,10 @@ function clicked(d) {
             if (aisp.properties.dezesete >= "61" && aisp.properties.dezesete <= "80") {
                 return '#fc8d59'
             }
-             if (aisp.properties.dezesseis >= "81" && aisp.properties.dezesseis <= "99") {
+             if (aisp.properties.dezesete >= "81" && aisp.properties.dezesete <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.dezesseis >= "100") {
+             if (aisp.properties.dezesete >= "100") {
                 return '#b30000'
             }
              else {
@@ -491,7 +495,7 @@ function clicked(d) {
           d3.select('.label-ano').classed('hidden', true);
           d3.select('.label-total').classed('hidden', false);
             if (aisp.properties.Total < "1") {
-                return 'gray'
+                return '#eaedf2'
             }
             if (aisp.properties.Total > "0" && aisp.properties.Total <= "50") {
                 return '#fef0d9'
@@ -508,7 +512,7 @@ function clicked(d) {
              if (aisp.properties.Total >= "350" && aisp.properties.Total < "500") {
                 return '#e34a33'
             }
-             if (aisp.properties.Total >= "500") {
+             if (aisp.properties.Total >= "500" && aisp.properties.Total <= "560") {
                 return '#b30000'
             }
              else {
@@ -519,29 +523,29 @@ function clicked(d) {
     }  
 
 // Define valor padrão do timeslider
-    function initialState(data){
-        if (document.getElementById("range").innerHTML == "Total") {
+    function initialState(aisp){
+        if (document.getElementById("range").innerHTML == "Total (2011-2017)") {
          d3.select('.label-ano').classed('hidden', true);
           d3.select('#label-total').classed('hidden', false);
-           if (data.properties.Total < "1") {
-                return 'gray'
+           if (aisp.properties.Total < "1") {
+                return '#eaedf2'
             }
-            if (data.properties.Total > "0" && data.properties.Total <= "50") {
+            if (aisp.properties.Total > "0" && aisp.properties.Total <= "50") {
                 return '#fef0d9'
             }
-            if (data.properties.Total >= "50" && data.properties.Total <= "100") {
+            if (aisp.properties.Total >= "50" && aisp.properties.Total <= "100") {
                 return '#fdd49e'
             }
-            if (data.properties.Total >= "100" && data.properties.Total < "200") {
+            if (aisp.properties.Total >= "100" && aisp.properties.Total < "200") {
                 return '#fdbb84'
             }
-            if (data.properties.Total >= "200" && data.properties.Total < "350") {
+            if (aisp.properties.Total >= "200" && aisp.properties.Total < "350") {
                 return '#fc8d59'
             }
-             if (data.properties.Total >= "350" && data.properties.Total < "500") {
+             if (aisp.properties.Total >= "350" && aisp.properties.Total < "500") {
                 return '#e34a33'
             }
-             if (data.properties.Total >= "500" && data.properties.Total <= "560") {
+             if (aisp.properties.Total >= "500" && aisp.properties.Total <= "560") {
                 return '#b30000'
             }
              else {

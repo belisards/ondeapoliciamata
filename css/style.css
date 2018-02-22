@@ -80,7 +80,7 @@ svg text {
 }
 .label li { float: left; margin-right: 10px; }
 .label span { border: 1px solid black; float: left; width: 22px; height: 22px; margin-right: 5px; }
-.label .zero { background-color: gray; }
+.label .zero { background-color: #eaedf2; }
 .label .grau1 { background-color: #fef0d9; }
 .label .grau2 { background-color: #fdd49e; }
 .label .grau3 { background-color: #fdbb84; }
