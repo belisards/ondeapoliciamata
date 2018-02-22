@@ -2,16 +2,23 @@
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v15/mem5YaGs126MiZpBA-UN_r8OUuhs.ttf) format('truetype');
+}
+
 body { margin: 0;   
     overflow-x: hidden;
     height: 100vh;
     padding: 1%;
     color: black;
     font-family: 'Open Sans';
-    background: linear-gradient(-45deg, #ffa8a8,  white);
-    background-size: 150% 150%;}
+    background: linear-gradient(-45deg, #FFCACA,  white);
+  }
 
-header {  text-align:center; padding: 0.25em; position: absolute; width: 100%;}
+header {  text-align:center; padding: 0.25em; position: relative; width: 100%;}
 
 header img { position: relative; }
 
@@ -52,22 +59,60 @@ svg text {
 }
 
 /* MEDIA QUERIES */
-@media screen and (min-width: 47.5em ) {
-  .leftColumn { margin-right: 19.5em; }
-   .menu { 
 
+@media only screen and (min-width: 1200px) {
+    .menu {
+    position: absolute; 
+    top: 10%;
+    width: 22%;    }
+
+     #mapcont {
+      position: absolute;
+      top: 20px;
+    }
+     .panel {
+      width: 100%;
+    }
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .menu {
+    position: relative;
+    top: 20%;
+    width: 100%;   
+   }
+
+.zoom-cont { 
+ position: absolute !important;
+ top:20%;
+}
+.zoom {
+  padding: 15px 15px !important;
+}
+
+   
+.tooltip {
+  position: relative !important;
+  width: 100% !important;
+  left: 0px !important;
+  top: 0px !important;
+  max-width: none !important; 
+}
+
+  }
+.menu { 
     /* Fallback for web browsers that don't support RGBa */
     background-color: rgb(252, 252, 252);
     /* RGBa with 0.6 opacity */
-    background-color: rgba(252, 252, 252, 0.15);
-    text-align:left; padding-left: 10px; position: absolute; top: 15em; width: 20em;  }   
-}
-
+    background-color: rgba(252, 252, 252, 0.7);
+    text-align:left; 
+    padding-left: 10px; }  
 
 /* labels */
 
 .label-cont { 
- position: absolute;
+ position: relative;
  bottom: 20px;
  left: 20px;
 }
@@ -104,10 +149,8 @@ svg text {
 
 
 .zoom-cont { 
- position: absolute;
- bottom: 20px;
- right: 20px;
-}
+ position: relative;
+  float: right;}
 
 
 .homicidios {
@@ -141,12 +184,7 @@ border: black;
 }
 
 .dados {
-  font-family: 'Open Sans';
   font-size: 1.2em;
-  color: black;
-  height: 200px;
-  display: contents;
-  padding-top: 5px;
 }
 .anos, .dados{
   text-align: left;
@@ -154,9 +192,17 @@ border: black;
 
 
 #mapcont {
-  width: 100%
+    width: 100%;
+
+}
+#map {
+    width: 100%;
 }
 
+.svg-content-responsive {
+    top: 10px;
+    left: 0;
+}
 /*
 timeslider*/
 
@@ -269,12 +315,12 @@ acordeao*/
 
 
 .panel {
-    padding: 0 18px;
+    padding-left: 5px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     background-color: white;
     z-index: 9999;
-    position: relative;
-    width: 550px;
+    position: absolute;
+    width: 90%;
 }

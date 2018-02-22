@@ -1,13 +1,9 @@
 	<!-- TODO
 - Chrolopeth pra distribuir cores
-- Ajustar altura/posicao do mapa
 - Limitar pan
-- Melhorar responsividade
 - Gráfico com a evolução ano/ano
 - Usar queque para carregar JSON e CSV separadamente
-- Colocar total de tudo na div dados ao carregar 
 - Usar tiles para localizar
-- Escala: 0; 1-20; 20-40; 40-60; 80-100; 100-120
    -->
 
 
@@ -25,17 +21,12 @@
     <!-- D3 -->
     <script src="js/d3.v4.min.js"></script>
     <script src="js/topojson.v2.min.js"></script>
-    <link rel="stylesheet" href="css/fonte.css" type="text/css" />
-
   </head>
   
   <body>
     <header>
         <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
     
-<!-- 
-acordeao -->
-
 
     </header>
 
@@ -43,7 +34,6 @@ acordeao -->
       <div id="mapcont">
 
       <div id="map">
-                    </div>
                     </div>
 
 	  	<div class="menu">
@@ -55,7 +45,7 @@ acordeao -->
         </div>
       
    <div class="dados">
-    <br>Todos batalhões da Polícia Militar causaram<br>
+    <br>Os batalhões da Polícia Militar causaram<br>
     <b class="homicidios">5491</b><br> homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2011 e 2017<br>
   </div>
 
@@ -64,28 +54,10 @@ acordeao -->
 <div class="panel">
  
 
-    <p>Mapeamento da distribuição da violência policial na metrópole fluminense e no estado, baseado em dados oficiais do Instituto de Segurança Pública. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense.</p>
-        <p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal, uma vez que teriam sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes.<b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank">Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> <br> <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a> <br> Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
+    <p>Mapeamento da distribuição da violência policial no estado, baseado em dados oficiais. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense. </p><p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal.<b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank"><p>Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> <hr> <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a></p> <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
 </div>
 
-<script>
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight){
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
-}
-</script>
-        </div>
-
+    
            
 <div class="label-cont">
  <ul class="label label-total">
@@ -110,7 +82,9 @@ for (i = 0; i < acc.length; i++) {
         </ul>
       </div>
 
+    </div>
 
+     </div>
 <div class="zoom-cont">
 <button class="zoom" id="zoom-in">+</button>
 <button class="zoom" id="zoom-out">-</button>
@@ -123,11 +97,20 @@ for (i = 0; i < acc.length; i++) {
 mapa -->
 <script>  
 
-// Setup inicial
-var width = window.innerWidth/2,
-    height = window.innerHeight/2,
-    centered;
+// // Setup inicial
+// var width = d3.select("#map").clientWidth,
+//     height = d3.select("#map").clientHeight;
 
+  var dims = {
+        width: 800,
+        height: 400,
+        // svg_dx: 100,
+        // svg_dy: 100
+    };
+
+var centered;
+
+// Scroll
 const zoom = d3.zoom()
       .scaleExtent([1, 4])
       .on('zoom', zoomed);
@@ -140,6 +123,7 @@ function zoomed() {
   g.attr("transform", transform);
 }
 
+// Botões
 d3.select('#zoom-in').on('click', function() {
   // Smooth zooming
   zoom.scaleBy(svg.transition().duration(750), 1.3);
@@ -150,14 +134,14 @@ d3.select('#zoom-out').on('click', function() {
 });
 
 
-
+// Timeslider
 var inputValue = null;
 var time = ["2010","2011","2012","2013","2014", "2015", "2016", "2017", "Total"];
 
-
+// desenha enfim o mapa
 var projection = d3.geoMercator()
-    .translate([width / 2, height / 2])
-    .scale((width - 1) / 2 / Math.PI);
+    .translate([dims.width / 2, dims.height / 2])
+    .scale((dims.width)/ Math.PI);
 
 
 var path = d3.geoPath().projection(projection);
@@ -166,7 +150,7 @@ var path = d3.geoPath().projection(projection);
 var svg = d3.select("#map")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 900 480")
+    .attr("viewBox", "0 0 " + dims.width + " " + dims.height)
     .classed("svg-content-responsive", true)
     .call(zoom)
     ;
@@ -180,7 +164,7 @@ var g = svg.append("g");
 
 d3.json("autoresistenciario.json", function(error, aisp) {
 
-        projection.fitSize([width,height], topojson.feature(aisp, aisp.objects.LIMITE_AISP));
+        projection.fitSize([dims.width,dims.height], topojson.feature(aisp, aisp.objects.LIMITE_AISP));
         
           g.attr("class", "regiao")
           .selectAll("path")
@@ -203,7 +187,7 @@ tipMouseOver = function(d, i) {
                                // + 
                                // "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2017: " +  d.properties.dezesseis + 
                          +
-                                d.properties.Total +  "</b><br>homicídios decorrentes de intervenção policial entre 2010 e 2017" 
+                                d.properties.Total +  "</b><br>homicídios decorrentes de intervenção policial entre 2010 e 2017<br>" 
                                );                   
       }
 
@@ -219,9 +203,13 @@ tipMouseOver = function(d, i) {
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
             .html(
-             //  "<br><b>Total do " + d.properties.AISP + "° batalhão em " + document.getElementById("range").innerHTML  + ":</b><br> "+ d.properties.Total +
-             // 
-             "<b>Regiões</b>:<br> " +  d.properties.bairros
+               "<br><b>" + d.properties.AISP + "° batalhão " +
+                
+                // document.getElementById("range").innerHTML  + 
+                
+                "</b><br> " +
+             
+             "<br><b>Regiões</b>:<br> " +  d.properties.bairros
                                );
         }
 
@@ -229,8 +217,6 @@ tipMouseOver = function(d, i) {
     d3.select(".tooltip").style("opacity", 0); // 
             tooltip.classed('hidden', true);
 }
-
-
 
 /// Zoom no click
 function clicked(d) {
@@ -243,8 +229,8 @@ function clicked(d) {
     k = 4;
     centered = d;
   } else {
-    x = width / 2;
-    y = height / 2;
+    x = dims.width / 2;
+    y = dims.height / 2;
     k = 1;
     centered = null;
   }
@@ -254,13 +240,13 @@ function clicked(d) {
 
   g.transition()
       .duration(1500)
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      .attr("transform", "translate(" + dims.width / 2 + "," + dims.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
   }
 /// Fim do Zoom
 
 
-// Atualiza as cores quando move o filtro 
+// Atualiza as cores quando move o filtro  (trashera)
     d3.select("#timeslide").on("input", function() {
         update(+this.value);
     });
@@ -558,4 +544,24 @@ function clicked(d) {
 
 
 
+</script>
+<!-- 
+acordeão para saiba mais -->
+<script>
+
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    d3.select('.panel').classed('hidden', false);
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
 </script>
