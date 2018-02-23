@@ -21,9 +21,15 @@
     <!-- D3 -->
     <script src="js/d3.v4.min.js"></script>
     <script src="js/topojson.v2.min.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+
+
   </head>
   
   <body>
+    <div class="se-pre-con"></div>
     <header>
         <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
     
@@ -97,9 +103,14 @@
 mapa -->
 <script>  
 
+//paste this code under the head tag or in a separate js file.
+  // Wait for window load
+  $(window).load(function() {
+    // Animate loader off screen
+    $(".se-pre-con").fadeOut("slow");;
+  });
+
 // // Setup inicial
-// var width = d3.select("#map").clientWidth,
-//     height = d3.select("#map").clientHeight;
 
   var dims = {
         width: 800,
@@ -187,7 +198,7 @@ tipMouseOver = function(d, i) {
                                // + 
                                // "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2017: " +  d.properties.dezesseis + 
                          +
-                                d.properties.Total +  "</b><br>homicídios decorrentes de intervenção policial entre 2010 e 2017<br>" 
+                                d.properties.Total + " [" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>homicídios decorrentes de intervenção policial entre 2010 e 2017<br>" 
                                );                   
       }
 
@@ -195,7 +206,8 @@ tipMouseOver = function(d, i) {
                   d3.select(".dados").style("opacity", 0); // 
 };
 
-/// fim tooltip
+/// fim menu lateral
+
 
 /// Funções que lidam com a tooltip ao mover o mouse
   function mousemoved(d) {
@@ -207,7 +219,7 @@ tipMouseOver = function(d, i) {
                 
                 // document.getElementById("range").innerHTML  + 
                 
-                "</b><br> " +
+                "</b><br> "  +
              
              "<br><b>Regiões</b>:<br> " +  d.properties.bairros
                                );
