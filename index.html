@@ -56,8 +56,6 @@
 <br>
 <button class="accordion">Saiba mais [+]</button>
 <div class="panel">
- 
-
     <p>Mapeamento da distribuição da violência policial no estado, baseado em dados oficiais. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense. </p><p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal.<b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank"><p>Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> <hr> <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a></p> <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
 </div>
 
@@ -90,8 +88,8 @@
 
      </div>
 <div class="zoom-cont">
-<button class="zoom" id="zoom-in">+</button>
-<button class="zoom" id="zoom-out">-</button>
+  <button class="zoom" id="zoom-out">-</button>
+  <button class="zoom" id="zoom-in">+</button>
 </div>
 
   </body>
@@ -104,11 +102,9 @@ mapa -->
 
 // // Setup inicial
 
-  var dims = {
+var dims = {
         width: 800,
-        height: 400,
-        // svg_dx: 100,
-        // svg_dy: 100
+        height: 400
     };
 
 var centered;
@@ -140,6 +136,9 @@ d3.select('#zoom-out').on('click', function() {
 // Timeslider
 var inputValue = null;
 var time = ["2010","2011","2012","2013","2014", "2015", "2016", "2017", "Total"];
+var timeProp = ["dez","onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezesete", "Total"]
+var ano_selecionado = 8;
+
 
 // desenha enfim o mapa
 var projection = d3.geoMercator()
@@ -186,12 +185,17 @@ d3.json("autoresistenciario.json", function(error, aisp) {
 // tooltip superior
 
 tipMouseOver = function(d, i) {
+
+        var nome_ano = timeProp[ano_selecionado];
+        var valor = d.properties[nome_ano];
+
         d3.select(".dados").html("<br>O <b>" + d.properties.AISP + "° batalhão</b> causou<br><b class='homicidios'>" 
                                // + 
                                // "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2017: " +  d.properties.dezesseis + 
                          +
-                                d.properties.Total + " [" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>homicídios decorrentes de intervenção policial entre 2010 e 2017<br>" 
-                               );                   
+                                valor + " em " + time[ano_selecionado])
+                            
+                               ;                   
       }
 
  var tipMouseOut = function(d) {
@@ -207,12 +211,18 @@ tipMouseOver = function(d, i) {
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
             .html(
-               "<br><b>" + d.properties.AISP + "° batalhão " +
-                
-                // document.getElementById("range").innerHTML  + 
-                
-                "</b><br> "  +
-             
+               "<br><b>" + d.properties.AISP + "° BATALHÃO " 
+                                  +      " [" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>"
+                              //  + "</p><p id='dez'><br>2010: " + d.properties.dez
+                              //  + "<p id='onze'>2011: " + d.properties.onze
+                              //  + "</p><p id='doze'><br>2012: " + d.properties.doze
+                              //  + "</p><p id='treze'><br>2013: " + d.properties.treze
+                              //  + "</p><p id='treze'></p><p id='catorze' class='hidden'><br>2014: " + d.properties.catorze
+                              //  + "</p><p id='quinze' ><br>2015: " + d.properties.quinze
+                              //  + "</p><p id='dezesseis'><br>2016: " + d.properties.dezesseis
+                              // + "</p><p id='dezesete'><br>2017: " + d.properties.dezesete 
+                              //  + "</p><p id='total'><br>Total: " + d.properties.Total 
+                              +     "</b><br> "  +
              "<br><b>Regiões</b>:<br> " +  d.properties.bairros
                                );
         }
@@ -252,7 +262,9 @@ function clicked(d) {
 
 // Atualiza as cores quando move o filtro  (trashera)
     d3.select("#timeslide").on("input", function() {
+        ano_selecionado = this.value
         update(+this.value);
+        console.log(["ano",ano_selecionado])
     });
 
     function update(value) {
@@ -263,229 +275,41 @@ function clicked(d) {
             ;
     }
 
+
     function timeMatch(aisp) {
-        if (inputValue == "2010") {
-        
-            if (aisp.properties.dez < "1") {
+        if (inputValue != "Total") {
+           d3.select('.label-ano').classed('hidden', false);
+           d3.select('.label-total').classed('hidden', true);
+          var nome_ano = timeProp[ano_selecionado];
+            if (aisp.properties[nome_ano] == "0") {
                 return '#eaedf2'
             }
-            if (aisp.properties.dez > "0" && aisp.properties.dez <= "19") {
+            if (aisp.properties[nome_ano] >= "1" && aisp.properties[nome_ano] <= "19") {
+                return '#fef0d9'
+            }
+            if (aisp.properties[nome_ano] >= "20" && aisp.properties[nome_ano] <= "39") {
                 return '#fdd49e'
             }
-            if (aisp.properties.dez >= "20" && aisp.properties.dez <= "39") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.dez >= "40" && aisp.properties.dez <= "59") {
+            if (aisp.properties[nome_ano] >= "40" && aisp.properties[nome_ano] <= "59") {
                 return '#fdbb84'
             }
-            if (aisp.properties.dez >= "60" && aisp.properties.dez <= "79") {
+            if (aisp.properties[nome_ano] >= "60" && aisp.properties[nome_ano] <= "79") {
                 return '#fc8d59'
             }
-             if (aisp.properties.dez >= "80" && aisp.properties.dez <= "99") {
+             if (aisp.properties[nome_ano] >= "80" && aisp.properties[nome_ano] <= "99") {
                 return '#e34a33'
             }
-             if (aisp.properties.dez >= "100") {
+             if (aisp.properties[nome_ano] >= "100") {
                 return '#b30000'
             }
              else {
                 return 'black'
             }
-
-        } else if (inputValue == "2011") {
-
-          if (aisp.properties.onze < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.onze > "0" && aisp.properties.onze <= "19") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.onze >= "20" && aisp.properties.onze <= "39") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.onze >= "40" && aisp.properties.onze <= "59") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.onze >= "60" && aisp.properties.onze <= "79") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.onze >= "80" && aisp.properties.onze <= "99") {
-                return '#e34a33'
-            }
-             if (aisp.properties.onze >= "100") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        } else if (inputValue == "2012") {
-          if (aisp.properties.doze < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.doze > "0" && aisp.properties.doze <= "19") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.doze >= "20" && aisp.properties.doze <= "39") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.doze >= "40" && aisp.properties.doze <= "59") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.doze >= "60" && aisp.properties.doze <= "79") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.doze >= "80" && aisp.properties.doze <= "99") {
-                return '#e34a33'
-            }
-             if (aisp.properties.doze >= "100") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        }
- else if (inputValue == "2013") {
-
-      
-             if (aisp.properties.treze < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.treze > "0" && aisp.properties.treze <= "19") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.treze >= "20" && aisp.properties.treze <= "39") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.treze >= "40" && aisp.properties.treze <= "59") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.treze >= "60" && aisp.properties.treze <= "79") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.treze >= "80" && aisp.properties.treze <= "99") {
-                return '#e34a33'
-            }
-             if (aisp.properties.treze >= "100") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        }
-        else if (inputValue == "2014") {
-            if (aisp.properties.catorze < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.catorze > "0" && aisp.properties.catorze <= "19") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.catorze >= "20" && aisp.properties.catorze <= "39") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.catorze >= "40" && aisp.properties.catorze <= "59") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.catorze >= "60" && aisp.properties.catorze <= "79") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.catorze >= "80" && aisp.properties.catorze <= "99") {
-                return '#e34a33'
-            }
-             if (aisp.properties.catorze >= "100") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        }
-      else if (inputValue == "2015") {
-            
-         if (aisp.properties.quinze < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.quinze > "0" && aisp.properties.quinze <= "19") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.quinze >= "20" && aisp.properties.quinze <= "39") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.quinze >= "40" && aisp.properties.quinze <= "59") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.quinze >= "60" && aisp.properties.quinze <= "79") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.quinze >= "80" && aisp.properties.quinze <= "99") {
-                return '#e34a33'
-            }
-             if (aisp.properties.quinze >= "100") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        }
-
-        else if (inputValue == "2016") {
-          d3.select('.label-ano').classed('hidden', false);
-          d3.select('.label-total').classed('hidden', true);
-            if (aisp.properties.dezesseis < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.dezesseis > "0" && aisp.properties.dezesseis <= "19") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.dezesseis >= "20" && aisp.properties.dezesseis <= "39") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.dezesseis >= "40" && aisp.properties.dezesseis <= "59") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.dezesseis >= "60" && aisp.properties.dezesseis <= "79") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.dezesseis >= "80" && aisp.properties.dezesseis <= "99") {
-                return '#e34a33'
-            }
-             if (aisp.properties.dezesseis >= "100") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        }
-
-
-         else if (inputValue == "2017") {
-          d3.select('.label-ano').classed('hidden', false);
-          d3.select('.label-total').classed('hidden', true);
-            if (aisp.properties.dezesete < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.dezesete > "0" && aisp.properties.dezesete <= "20") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.dezesete >= "21" && aisp.properties.dezesete <= "40") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.dezesete >= "41" && aisp.properties.dezesete <= "60") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.dezesete >= "61" && aisp.properties.dezesete <= "80") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.dezesete >= "81" && aisp.properties.dezesete <= "99") {
-                return '#e34a33'
-            }
-             if (aisp.properties.dezesete >= "100") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        }
-    else if (inputValue == "Total") {
+          }
+    else  {
           d3.select('.label-ano').classed('hidden', true);
           d3.select('.label-total').classed('hidden', false);
+          d3.select('.Total').classed('hidden', false);
             if (aisp.properties.Total < "1") {
                 return '#eaedf2'
             }

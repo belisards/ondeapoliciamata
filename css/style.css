@@ -8,7 +8,7 @@
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 300;
-  src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v15/mem5YaGs126MiZpBA-UN_r8OUuhs.ttf) format('truetype');
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(fonte.ttf) format('truetype');
 }
 
 body { margin: 0;   
@@ -204,6 +204,11 @@ border: black;
 .svg-content-responsive {
     top: 10px;
     left: 0;
+}
+
+#dez, #onze, #doze, #treze, #catorze, #quinze, #dezesseis, #dezesete, #total
+{
+  padding:0px;
 }
 /*
 timeslider*/
