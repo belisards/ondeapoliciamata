@@ -1,12 +1,3 @@
-	<!-- TODO
-- Chrolopeth pra distribuir cores
-- Limitar pan
-- Gráfico com a evolução ano/ano
-- Usar queque para carregar JSON e CSV separadamente
-- Usar tiles para localizar
-   -->
-
-
   <html lang="pt-br">
   <head>
     <meta charset="utf-8">
@@ -22,7 +13,26 @@
     <script src="js/d3.v4.min.js"></script>
     <script src="js/topojson.v2.min.js"></script>
 
+<!-- 
+acordeão para saiba mais -->
+<script>
 
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    d3.select('.panel').classed('hidden', false);
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+</script>
 
   </head>
   
@@ -43,9 +53,20 @@
 	  	<div class="menu">
 
 	  	    <div class="sliderContainer">
-        <h4>SELECIONE O ANO:</h4>
-            <input id="timeslide" type="range" min="0" max="8" value="8" step="1"/><br>
-            <span id="range">Total (2011-2017)</span>
+        <h4>SELECIONE O ANO [2010-2017]:</h4>
+            <input id="timeslide" type="range" min="0" max="8" value="8" step="1" list="ticks"/><br>
+            <datalist id="ticks">
+    <option>2010</option>
+    <option>2011</option>
+    <option>2012</option>
+    <option>2013</option>
+    <option>2014</option>
+    <option>2015</option>
+    <option>2016</option>
+    <option>2017</option>
+    <option>Total</option>
+          </datalist>
+            <span id="range">Total</span>
         </div>
       
    <div class="dados">
@@ -182,24 +203,20 @@ d3.json("autoresistenciario.json", function(error, aisp) {
       }); 
 
 
-// tooltip superior
+// descritivo Batalhao na direita
 
 tipMouseOver = function(d, i) {
 
         var nome_ano = timeProp[ano_selecionado];
         var valor = d.properties[nome_ano];
 
-        d3.select(".dados").html("<br>O <b>" + d.properties.AISP + "° batalhão</b> causou<br><b class='homicidios'>" 
-                               // + 
-                               // "2010: " + d.properties.dez+ "<br>2011: " +  d.properties.onze + "<br>2012: " +  d.properties.doze + "<br>2013: " +  d.properties.treze + "<br>2014: " +  d.properties.catorze + "<br>2015: " +  d.properties.quinze + "<br>2017: " +  d.properties.dezesseis + 
-                         +
-                                valor + " em " + time[ano_selecionado])
-                            
-                               ;                   
+        d3.select(".dados").html()
+
+      /// tooltip da direita conteudo              
       }
 
  var tipMouseOut = function(d) {
-                  d3.select(".dados").style("opacity", 0); // 
+                  d3.select(".dados").classed("hidden", true); // 
 };
 
 /// fim menu lateral
@@ -207,24 +224,17 @@ tipMouseOver = function(d, i) {
 
 /// Funções que lidam com a tooltip ao mover o mouse
   function mousemoved(d) {
-              d3.select('.panel').classed('hidden', true);
+            var nome_ano = timeProp[ano_selecionado];
+        var valor = d.properties[nome_ano];
+          d3.select('.panel').classed('hidden', true);
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
             .html(
-               "<br><b>" + d.properties.AISP + "° BATALHÃO " 
-                                  +      " [" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>"
-                              //  + "</p><p id='dez'><br>2010: " + d.properties.dez
-                              //  + "<p id='onze'>2011: " + d.properties.onze
-                              //  + "</p><p id='doze'><br>2012: " + d.properties.doze
-                              //  + "</p><p id='treze'><br>2013: " + d.properties.treze
-                              //  + "</p><p id='treze'></p><p id='catorze' class='hidden'><br>2014: " + d.properties.catorze
-                              //  + "</p><p id='quinze' ><br>2015: " + d.properties.quinze
-                              //  + "</p><p id='dezesseis'><br>2016: " + d.properties.dezesseis
-                              // + "</p><p id='dezesete'><br>2017: " + d.properties.dezesete 
-                              //  + "</p><p id='total'><br>Total: " + d.properties.Total 
-                              +     "</b><br> "  +
-             "<br><b>Regiões</b>:<br> " +  d.properties.bairros
-                               );
+               "<p>O <b>" + d.properties.AISP + "° BATALHÃO</b> causou <b></p><p>" + valor + "</b> homicídios em " + time[ano_selecionado]   + "</p><p>Regiões: " + d.properties.bairros  + "</p>"
+               
+          //  <br>[" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>" 
+          //                      
+          )
         }
 
   function mousegone() {
@@ -260,11 +270,11 @@ function clicked(d) {
 /// Fim do Zoom
 
 
-// Atualiza as cores quando move o filtro  (trashera)
+// Atualiza as cores quando move o filtro
     d3.select("#timeslide").on("input", function() {
+        d3.select('.dados').classed('hidden', true);
         ano_selecionado = this.value
         update(+this.value);
-        console.log(["ano",ano_selecionado])
     });
 
     function update(value) {
@@ -275,11 +285,11 @@ function clicked(d) {
             ;
     }
 
-
     function timeMatch(aisp) {
         if (inputValue != "Total") {
            d3.select('.label-ano').classed('hidden', false);
            d3.select('.label-total').classed('hidden', true);
+
           var nome_ano = timeProp[ano_selecionado];
             if (aisp.properties[nome_ano] == "0") {
                 return '#eaedf2'
@@ -340,7 +350,7 @@ function clicked(d) {
 
 // Define valor padrão do timeslider
     function initialState(aisp){
-        if (document.getElementById("range").innerHTML == "Total (2011-2017)") {
+        if (document.getElementById("range").innerHTML == "Total") {
          d3.select('.label-ano').classed('hidden', true);
           d3.select('#label-total').classed('hidden', false);
            if (aisp.properties.Total < "1") {
@@ -373,23 +383,4 @@ function clicked(d) {
 
 
 </script>
-<!-- 
-acordeão para saiba mais -->
-<script>
 
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    d3.select('.panel').classed('hidden', false);
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight){
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
-}
-</script>
