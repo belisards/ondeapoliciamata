@@ -13,46 +13,41 @@
     <script src="js/d3.v4.min.js"></script>
     <script src="js/topojson.v2.min.js"></script>
 
-<!-- 
-acordeão para saiba mais -->
-<script>
-
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    d3.select('.panel').classed('hidden', false);
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight){
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
-}
-</script>
-
   </head>
-  
-  <body>
-    <div class="se-pre-con"></div>
-    <header>
+      <header>
         <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
-    
+        </header>
 
-    </header>
+  <body>
 
 
-      <div id="mapcont">
+<!-- Modal -->
+<div id="myModal" class="modal">
+  <!-- Modal conteúdo -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+     <p>Mapeamento da distribuição da violência policial no estado, baseado em dados oficiais. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense. </p><p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal.<b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank"><p>Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> <hr> <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a></p> <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
+  </div>
 
-      <div id="map">
-                    </div>
+</div>
 
-	  	<div class="menu">
 
-	  	    <div class="sliderContainer">
+  
+
+
+   <div id="mapcont">
+     <div id="map">
+      </div>
+             <div class="zoom-cont">
+                <button class="zoom" id="zoom-out">-</button>
+                 <button class="zoom" id="zoom-in">+</button>
+            </div>
+     </div>
+
+
+
+   <div class="menu">
+          <div class="sliderContainer">
         <h4>SELECIONE O ANO [2010-2017]:</h4>
             <input id="timeslide" type="range" min="0" max="8" value="8" step="1" list="ticks"/><br>
             <datalist id="ticks">
@@ -75,12 +70,7 @@ for (i = 0; i < acc.length; i++) {
   </div>
 
 <br>
-<button class="accordion">Saiba mais [+]</button>
-<div class="panel">
-    <p>Mapeamento da distribuição da violência policial no estado, baseado em dados oficiais. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense. </p><p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal.<b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank"><p>Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> <hr> <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a></p> <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
-</div>
-
-    
+<button id="saibamais">Saiba mais [+]</button>
            
 <div class="label-cont">
  <ul class="label label-total">
@@ -107,21 +97,42 @@ for (i = 0; i < acc.length; i++) {
 
     </div>
 
-     </div>
-<div class="zoom-cont">
-  <button class="zoom" id="zoom-out">-</button>
-  <button class="zoom" id="zoom-in">+</button>
-</div>
+
 
   </body>
 </html>
 
-<!-- 
-mapa -->
 <script>  
 
+// Texto modal
+// Get the modal
+var modal = document.getElementById('myModal');
 
-// // Setup inicial
+// Get the button that opens the modal
+var btn = document.getElementById("saibamais");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+// Setup inicial mapa
 
 var dims = {
         width: 800,
@@ -226,7 +237,6 @@ tipMouseOver = function(d, i) {
   function mousemoved(d) {
             var nome_ano = timeProp[ano_selecionado];
         var valor = d.properties[nome_ano];
-          d3.select('.panel').classed('hidden', true);
           tooltip.classed('hidden', false)
             .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
             .html(
@@ -272,7 +282,6 @@ function clicked(d) {
 
 // Atualiza as cores quando move o filtro
     d3.select("#timeslide").on("input", function() {
-        d3.select('.dados').classed('hidden', true);
         ano_selecionado = this.value
         update(+this.value);
     });
@@ -319,7 +328,6 @@ function clicked(d) {
     else  {
           d3.select('.label-ano').classed('hidden', true);
           d3.select('.label-total').classed('hidden', false);
-          d3.select('.Total').classed('hidden', false);
             if (aisp.properties.Total < "1") {
                 return '#eaedf2'
             }
@@ -379,8 +387,5 @@ function clicked(d) {
             }
         };
 }
-
-
-
 </script>
 
