@@ -1,113 +1,114 @@
-  <html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="Violência Policial,Autos de Resistência,Rio de Janeiro,Polícia Militar">
-    <meta name="author" content="Adriano Belisário - @belisards">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link href="css/style.css" rel="stylesheet">
+<html lang="pt-br">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116577132-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    <title>Onde a Polícia Mata?</title>
+  gtag('config', 'UA-116577132-1');
+</script>
 
-    <!-- D3 -->
-    <script src="js/d3.v4.min.js"></script>
-    <script src="js/topojson.v2.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Violência Policial,Autos de Resistência,Rio de Janeiro,Polícia Militar">
+  <meta name="author" content="Adriano Belisário - @belisards">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link href="css/style.css" rel="stylesheet">
 
-  </head>
-      <header>
-        <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
-        </header>
+  <title>Onde a Polícia Mata?</title>
 
-  <body>
+  <script src="js/d3.v4.min.js"></script>
+  <script src="js/topojson.v2.min.js"></script>
+</head>
+
+<header>
+  <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
+</header>
 
 
-<!-- Modal -->
-<div id="myModal" class="modal">
-  <!-- Modal conteúdo -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-     <p>Mapeamento da distribuição da violência policial no estado, baseado em dados oficiais. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense. </p><p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal.<b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank"><p>Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> <hr> <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a></p> <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
+<body>
+
+  <!-- Modal invisível -->
+  <div id="saibamais-cont" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Mapeamento da distribuição da violência policial no estado, baseado em dados oficiais. Cada região representa a área de atuação de um batalhão da Polícia Militar (PM). A concentração da letalidade ocorre principalmente em regiões de baixa renda na Baixada Fluminense. </p><p>Os homicídios praticados por policiais (“autos de resistência”) recebem um tratamento especial do Estado, pois não são vistos como contrários ao ordenamento legal.<b><a href="https://medium.com/@justicaglobal/onde-a-pol%C3%ADcia-mata-homic%C3%ADdios-praticados-por-policiais-militares-no-estado-do-rio-de-janeiro-9797c1b8041a" target="_blank"><p>Saiba mais sobre o tema no informe da Justiça Global.</a></b></p> <hr> <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a></p> <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
+    </div>
   </div>
 
-</div>
-
-
-  
-
-
-   <div id="mapcont">
+    <!-- Mapa -->
+    <div id="mapcont">
      <div id="map">
-      </div>
-             </div>
-             <div class="zoom-cont">
-                <button class="zoom" id="zoom-out">-</button>
-                 <button class="zoom" id="zoom-in">+</button>
-     
      </div>
+   </div>
+   <div class="zoom-cont">
+    <button class="zoom" id="zoom-out">-</button>
+    <button class="zoom" id="zoom-in">+</button>
+  </div>
 
+<!-- Menu -->
+<div class="menu">
+  <div class="sliderContainer">
+    <h4>SELECIONE O ANO [2010-2017]:</h4>
+    <input id="timeslide" type="range" min="0" max="8" value="8" step="1" list="ticks"/><br>
+    <datalist id="ticks">
+      <option>2010</option>
+      <option>2011</option>
+      <option>2012</option>
+      <option>2013</option>
+      <option>2014</option>
+      <option>2015</option>
+      <option>2016</option>
+      <option>2017</option>
+      <option>Total</option>
+    </datalist>
+    <span id="range">Total</span>
+  </div>
 
-
-   <div class="menu">
-          <div class="sliderContainer">
-        <h4>SELECIONE O ANO [2010-2017]:</h4>
-            <input id="timeslide" type="range" min="0" max="8" value="8" step="1" list="ticks"/><br>
-            <datalist id="ticks">
-    <option>2010</option>
-    <option>2011</option>
-    <option>2012</option>
-    <option>2013</option>
-    <option>2014</option>
-    <option>2015</option>
-    <option>2016</option>
-    <option>2017</option>
-    <option>Total</option>
-          </datalist>
-            <span id="range">Total</span>
-        </div>
-      
-   <div class="dados">
+  <div class="dados">
     <br>Os batalhões da Polícia Militar causaram<br>
     <b class="homicidios">5491</b><br> homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2011 e 2017<br>
   </div>
 
-<br>
-<button id="saibamais">Saiba mais [+]</button>
-           
-<div class="label-cont">
- <ul class="label label-total">
-            <br />
-            <li><span class="zero"></span> Sem homicídios</li><br />
-            <li><span class="grau1"></span> Entre 0 e 100</li><br />
-            <li><span class="grau2"></span> Entre 101 e 200</li><br />
-            <li><span class="grau3"></span> Entre 201 e 300</li><br />
-            <li><span class="grau4"></span> Entre 301 e 400</li><br />
-            <li><span class="grau5"></span> Entre 401 e 500</li><br />
-            <li><span class="grau6"></span> Mais de 500</li><br />
-        </ul>
-   <ul class="label label-ano hidden">
-            <br />
-            <li><span class="zero"></span> Sem homicídios</li><br />
-            <li><span class="grau1"></span> Entre 0 e 19</li><br />
-            <li><span class="grau2"></span> Entre 20 e 39</li><br />
-            <li><span class="grau3"></span> Entre 40 e 59</li><br />
-            <li><span class="grau4"></span> Entre 60 e 79</li><br />
-            <li><span class="grau5"></span> Entre 80 e 100</li><br />
-            <li><span class="grau6"></span> Mais de 100</li><br />
-        </ul>
-      </div>
+  <br>
+  <button id="saibamais">Saiba mais [+]</button>
 
-    </div>
+  <!-- Legenda -->
+  <div class="label-cont">
+   <ul class="label label-total">
+    <br />
+    <li><span class="zero"></span> Sem homicídios</li><br />
+    <li><span class="grau1"></span> Entre 0 e 100</li><br />
+    <li><span class="grau2"></span> Entre 101 e 200</li><br />
+    <li><span class="grau3"></span> Entre 201 e 300</li><br />
+    <li><span class="grau4"></span> Entre 301 e 400</li><br />
+    <li><span class="grau5"></span> Entre 401 e 500</li><br />
+    <li><span class="grau6"></span> Mais de 500</li><br />
+  </ul>
+  <ul class="label label-ano hidden">
+    <br />
+    <li><span class="zero"></span> Sem homicídios</li><br />
+    <li><span class="grau1"></span> Entre 0 e 19</li><br />
+    <li><span class="grau2"></span> Entre 20 e 39</li><br />
+    <li><span class="grau3"></span> Entre 40 e 59</li><br />
+    <li><span class="grau4"></span> Entre 60 e 79</li><br />
+    <li><span class="grau5"></span> Entre 80 e 100</li><br />
+    <li><span class="grau6"></span> Mais de 100</li><br />
+  </ul>
+</div>
 
+</div>
 
-
-  </body>
+</body>
 </html>
 
 <script>  
 
 // Texto modal
 // Get the modal
-var modal = document.getElementById('myModal');
+var modal = document.getElementById('saibamais-cont');
 
 // Get the button that opens the modal
 var btn = document.getElementById("saibamais");
@@ -117,39 +118,39 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
 btn.onclick = function() {
-    modal.style.display = "block";
+  modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-    modal.style.display = "none";
+  modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 }
 
 
 // Setup inicial mapa
 
 var dims = {
-        width: 800,
-        height: 400
-    };
+  width: 800,
+  height: 400
+};
 
 var centered;
 
 // Scroll
 const zoom = d3.zoom()
-      .scaleExtent([1, 20])
-      .on('zoom', zoomed);
+.scaleExtent([1, 20])
+.on('zoom', zoomed);
 
- 
+
 function zoomed() {
-          d3.select('g').attr('transform', d3.event.transform);
+  d3.select('g').attr('transform', d3.event.transform);
   var transform = d3.event.transform; 
   g.style("stroke-width", 1.5 / transform.k + "px");
   g.attr("transform", transform);
@@ -167,7 +168,7 @@ d3.select('#zoom-out').on('click', function() {
 
 
 // Timeslider
-var inputValue = null;
+var inputValue = 'Total';
 var time = ["2010","2011","2012","2013","2014", "2015", "2016", "2017", "Total"];
 var timeProp = ["dez","onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezesete", "Total"]
 var ano_selecionado = 8;
@@ -175,83 +176,81 @@ var ano_selecionado = 8;
 
 // desenha enfim o mapa
 var projection = d3.geoMercator()
-    .translate([dims.width / 2, dims.height / 2])
-    .scale((dims.width)/ Math.PI);
+.translate([dims.width / 2, dims.height / 2])
+.scale((dims.width)/ Math.PI);
 
 
 var path = d3.geoPath().projection(projection);
 
 
 var svg = d3.select("#map")
-    .append("svg")
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 " + dims.width + " " + dims.height)
-    .classed("svg-content-responsive", true)
-    .call(zoom)
-    ;
+.append("svg")
+.attr("preserveAspectRatio", "xMinYMin meet")
+.attr("viewBox", "0 0 " + dims.width + " " + dims.height)
+.classed("svg-content-responsive", true)
+.call(zoom)
+;
 
 
 var tooltip = d3.select('#map').append('div')
-              .attr('class', 'hidden tooltip');
+.attr('class', 'hidden tooltip');
 
 /// Começa a desenhar o mapa
 var g = svg.append("g");
 
 d3.json("autoresistenciario.json", function(error, aisp) {
 
-        projection.fitSize([dims.width,dims.height], topojson.feature(aisp, aisp.objects.LIMITE_AISP));
-        
-          g.attr("class", "regiao")
-          .selectAll("path")
-          .data(topojson.feature(aisp, aisp.objects.LIMITE_AISP).features)
-          .enter().append("path")
-          .attr( "fill", initialState )
-          .attr("d", path) 
-          .on('mousemove', mousemoved)
-          .on('mouseover', tipMouseOver) 
-          .on('mouseout', tipMouseOut)
-          .on('mouseout', mousegone)
-          .on('click', clicked)
-      }); 
+  projection.fitSize([dims.width,dims.height], topojson.feature(aisp, aisp.objects.LIMITE_AISP));
+
+  g.attr("class", "regiao")
+  .selectAll("path")
+  .data(topojson.feature(aisp, aisp.objects.LIMITE_AISP).features)
+  .enter().append("path")
+  .attr( "fill", timeMatch)
+  .attr("d", path) 
+  .on('mousemove', mousemoved)
+  .on('mouseover', tipMouseOver) 
+  .on('mouseout', tipMouseOut)
+  .on('mouseout', mousegone)
+  .on('click', clicked)
+}); 
 
 
 // descritivo Batalhao na direita
 
 tipMouseOver = function(d, i) {
 
-        var nome_ano = timeProp[ano_selecionado];
-        var valor = d.properties[nome_ano];
+  var nome_ano = timeProp[ano_selecionado];
+  var valor = d.properties[nome_ano];
 
-        d3.select(".dados").html()
+  d3.select(".dados").html()
 
       /// tooltip da direita conteudo              
-      }
+    }
 
- var tipMouseOut = function(d) {
+    var tipMouseOut = function(d) {
                   d3.select(".dados").classed("hidden", true); // 
-};
+                };
 
 /// fim menu lateral
 
 
 /// Funções que lidam com a tooltip ao mover o mouse
-  function mousemoved(d) {
-            var nome_ano = timeProp[ano_selecionado];
-        var valor = d.properties[nome_ano];
-          tooltip.classed('hidden', false)
-            .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
-            .html(
-               "<p>O <b>" + d.properties.AISP + "° BATALHÃO</b> causou <b></p><p>" + valor + "</b> homicídios em " + time[ano_selecionado]   + "</p><p>Regiões: " + d.properties.bairros  + "</p>"
-               
+function mousemoved(d) {
+  var nome_ano = timeProp[ano_selecionado];
+  var valor = d.properties[nome_ano];
+  tooltip.classed('hidden', false)
+  .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
+  .html(
+   "<p>O <b>" + d.properties.AISP + "° BATALHÃO</b> causou <b>" + valor + " homicídios </b> em " + time[ano_selecionado]   + "</p><p>Regiões: " + d.properties.bairros  + "</p>"
           //  <br>[" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>" 
           //                      
           )
-        }
-
-  function mousegone() {
-    d3.select(".tooltip").style("opacity", 0); // 
-            tooltip.classed('hidden', true);
 }
+
+function mousegone() {
+    tooltip.classed('hidden', true);
+  }
 
 /// Zoom no click
 function clicked(d) {
@@ -271,122 +270,91 @@ function clicked(d) {
   }
 
   g.selectAll("path")
-      .classed("active", centered && function(d) { return d === centered; });
+  .classed("active", centered && function(d) { return d === centered; });
 
   g.transition()
-      .duration(1500)
-      .attr("transform", "translate(" + dims.width / 2 + "," + dims.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-      .style("stroke-width", 1.5 / k + "px");
-  }
+  .duration(1500)
+  .attr("transform", "translate(" + dims.width / 2 + "," + dims.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+  .style("stroke-width", 1.5 / k + "px");
+}
 /// Fim do Zoom
 
 
 // Atualiza as cores quando move o filtro
-    d3.select("#timeslide").on("input", function() {
-        ano_selecionado = this.value
-        update(+this.value);
-    });
+d3.select("#timeslide").on("input", function() {
+  ano_selecionado = this.value
+  update(+this.value);
+});
 
-    function update(value) {
-        document.getElementById("range").innerHTML=time[value];
-        inputValue = time[value];
-        d3.selectAll("path")
-            .style("fill", timeMatch)
-            ;
-    }
-
-    function timeMatch(aisp) {
-        if (inputValue != "Total") {
-           d3.select('.label-ano').classed('hidden', false);
-           d3.select('.label-total').classed('hidden', true);
-
-          var nome_ano = timeProp[ano_selecionado];
-            if (aisp.properties[nome_ano] == "0") {
-                return '#eaedf2'
-            }
-            if (aisp.properties[nome_ano] >= "1" && aisp.properties[nome_ano] <= "19") {
-                return '#fef0d9'
-            }
-            if (aisp.properties[nome_ano] >= "20" && aisp.properties[nome_ano] <= "39") {
-                return '#fdd49e'
-            }
-            if (aisp.properties[nome_ano] >= "40" && aisp.properties[nome_ano] <= "59") {
-                return '#fdbb84'
-            }
-            if (aisp.properties[nome_ano] >= "60" && aisp.properties[nome_ano] <= "79") {
-                return '#fc8d59'
-            }
-             if (aisp.properties[nome_ano] >= "80" && aisp.properties[nome_ano] <= "99") {
-                return '#e34a33'
-            }
-             if (aisp.properties[nome_ano] >= "100") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-          }
-    else  {
-          d3.select('.label-ano').classed('hidden', true);
-          d3.select('.label-total').classed('hidden', false);
-            if (aisp.properties.Total < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.Total > "0" && aisp.properties.Total <= "50") {
-                return '#fef0d9'
-            }
-            if (aisp.properties.Total >= "50" && aisp.properties.Total <= "100") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.Total >= "100" && aisp.properties.Total < "200") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.Total >= "200" && aisp.properties.Total < "350") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.Total >= "350" && aisp.properties.Total < "500") {
-                return '#e34a33'
-            }
-             if (aisp.properties.Total >= "500" && aisp.properties.Total <= "560") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        }
-        ;
-    }  
-
-// Define valor padrão do timeslider
-    function initialState(aisp){
-        if (document.getElementById("range").innerHTML == "Total") {
-         d3.select('.label-ano').classed('hidden', true);
-          d3.select('#label-total').classed('hidden', false);
-           if (aisp.properties.Total < "1") {
-                return '#eaedf2'
-            }
-            if (aisp.properties.Total > "0" && aisp.properties.Total <= "50") {
-                return '#fef0d9'
-            }
-            if (aisp.properties.Total >= "50" && aisp.properties.Total <= "100") {
-                return '#fdd49e'
-            }
-            if (aisp.properties.Total >= "100" && aisp.properties.Total < "200") {
-                return '#fdbb84'
-            }
-            if (aisp.properties.Total >= "200" && aisp.properties.Total < "350") {
-                return '#fc8d59'
-            }
-             if (aisp.properties.Total >= "350" && aisp.properties.Total < "500") {
-                return '#e34a33'
-            }
-             if (aisp.properties.Total >= "500" && aisp.properties.Total <= "560") {
-                return '#b30000'
-            }
-             else {
-                return 'black'
-            }
-        };
+function update(value) {
+  document.getElementById("range").innerHTML=time[value];
+  inputValue = time[value];
+  d3.selectAll("path")
+  .style("fill", timeMatch)
+  ;
 }
+
+function timeMatch(aisp) {
+  if (inputValue != "Total") {
+   d3.select('.label-ano').classed('hidden', false);
+   d3.select('.label-total').classed('hidden', true);
+
+   var nome_ano = timeProp[ano_selecionado];
+   if (aisp.properties[nome_ano] == "0") {
+    return '#eaedf2'
+  }
+  if (aisp.properties[nome_ano] >= "1" && aisp.properties[nome_ano] <= "19") {
+    return '#fef0d9'
+  }
+  if (aisp.properties[nome_ano] >= "20" && aisp.properties[nome_ano] <= "39") {
+    return '#fdd49e'
+  }
+  if (aisp.properties[nome_ano] >= "40" && aisp.properties[nome_ano] <= "59") {
+    return '#fdbb84'
+  }
+  if (aisp.properties[nome_ano] >= "60" && aisp.properties[nome_ano] <= "79") {
+    return '#fc8d59'
+  }
+  if (aisp.properties[nome_ano] >= "80" && aisp.properties[nome_ano] <= "99") {
+    return '#e34a33'
+  }
+  if (aisp.properties[nome_ano] >= "100") {
+    return '#b30000'
+  }
+  else {
+    return 'black'
+  }
+}
+else  {
+  d3.select('.label-ano').classed('hidden', true);
+  d3.select('.label-total').classed('hidden', false);
+  if (aisp.properties.Total < "1") {
+    return '#eaedf2'
+  }
+  if (aisp.properties.Total > "0" && aisp.properties.Total <= "50") {
+    return '#fef0d9'
+  }
+  if (aisp.properties.Total >= "50" && aisp.properties.Total <= "100") {
+    return '#fdd49e'
+  }
+  if (aisp.properties.Total >= "100" && aisp.properties.Total < "200") {
+    return '#fdbb84'
+  }
+  if (aisp.properties.Total >= "200" && aisp.properties.Total < "350") {
+    return '#fc8d59'
+  }
+  if (aisp.properties.Total >= "350" && aisp.properties.Total < "500") {
+    return '#e34a33'
+  }
+  if (aisp.properties.Total >= "500" && aisp.properties.Total <= "560") {
+    return '#b30000'
+  }
+  else {
+    return 'black'
+  }
+}
+;
+}  
+
 </script>
 
