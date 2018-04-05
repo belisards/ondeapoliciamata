@@ -232,8 +232,11 @@ tipMouseOver = function(d, i) {
   var nome_ano = timeProp[ano_selecionado];
   var valor = d.properties[nome_ano];
 
-  d3.select(".dados").html()
+  if (inputValue != "Total") {
 
+  d3.select(".dados").html("<p> O " + d.properties.AISP + "° batalhão da Polícia Militar causou <b class='homicidios'><br>" + d.properties.Total + " </b><br />homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2010 e 2017<br></p>")
+
+        }
       /// tooltip da direita conteudo              
     }
 
@@ -251,7 +254,7 @@ function mousemoved(d) {
   tooltip.classed('hidden', false)
   .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
   .html(
-   "<p>O <b>" + d.properties.AISP + "° BATALHÃO</b> causou <b>" + valor + " homicídios </b> em " + time[ano_selecionado]   + "</p><p>Regiões: " + d.properties.bairros  + "</p>"
+   "<p>O <b>" + d.properties.AISP + "° BATALHÃO</b> causou <b>" + valor + " homicídios </b> em " + time[ano_selecionado]   +  "</p><p>Regiões: " + d.properties.bairros  + "</p>"
           //  <br>[" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>" 
           //                      
           )

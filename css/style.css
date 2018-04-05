@@ -185,15 +185,19 @@ width: 100%
     width: 100%;
     position: absolute;
     top: 10px;
+    height: 99%;
 
   }
 
   .svg-content-responsive {
     top: 10px;
     left: 0;
+    height: 100%;
   }
 
 /*timeslider*/
+
+
 input[type=range] {
   height: 38px;
   -webkit-appearance: none;
