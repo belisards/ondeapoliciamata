@@ -3,7 +3,7 @@
 Mapeamento dos homicídios decorrentes de intervenção policial no Rio de Janeiro
 
 Realização: [Justiça Global](http://www.global.org.br/)
-Desenvolvimento: Adriano Belisário
+Desenvolvimento: [Adriano Belisário](http://twitter.com/belisards)
 
 ---
 

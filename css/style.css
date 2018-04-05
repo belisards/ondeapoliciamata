@@ -303,6 +303,7 @@ modal box*/
 
 /* Modal Content */
 .modal-content {
+  text-align: center;
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
