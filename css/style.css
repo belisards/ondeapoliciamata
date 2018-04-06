@@ -134,7 +134,14 @@ order:2;
 }
 
 
+.tooltip {
 
+  position: relative !important;
+width: 100% !important;
+left: 0px !important;
+top: 10% !important;
+max-width: none !important;
+}
 
 }
 /*fim media queries*/

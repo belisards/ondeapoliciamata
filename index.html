@@ -48,18 +48,18 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
          <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
     </div>
   </div>
-    <!-- Mapa -->
-     <div id="map">
-     </div>
+
 
       <div class="zoom-cont">
     <button class="zoom" id="zoom-out">-</button>
     <button class="zoom" id="zoom-in">+</button>
   </div>
-
+    <!-- Mapa -->
+     <div id="map">
+     </div>
 
   <div id="wrap">
-
+<div id="legenda"></div>
 <!-- Menu -->
 <div class="menu">
   <div class="sliderContainer">
@@ -217,7 +217,7 @@ var svg = d3.select("#map")
 ;
 
 
-var tooltip = d3.select('#wrap').append('div')
+var tooltip = d3.select('#legenda').append('div')
 .attr('class', 'hidden tooltip');
 
 /// Começa a desenhar o mapa
