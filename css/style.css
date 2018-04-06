@@ -109,6 +109,7 @@ svg text {
 
 .svg-content-responsive { 
   height: max-content;
+  margin-bottom: 20px;
    }
 
 .logo { 
