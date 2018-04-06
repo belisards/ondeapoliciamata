@@ -23,18 +23,13 @@
   <script src="js/topojson.v2.min.js"></script>
 </head>
 
-<header>
+<div class="logo">
   <img src="logo.png" alt ="Onde a Polícia Mata?"></img>
-</header>
+</div>
 
 
 <body>
-    <!-- Mapa -->
-     <div id="map">
-     </div>
-
-  <!-- Modal invisível -->
-  <div id="saibamais-cont" class="modal">
+<div id="saibamais-cont" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
        <p>
@@ -53,11 +48,17 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
          <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
     </div>
   </div>
+    <!-- Mapa -->
+     <div id="map">
+     </div>
 
-   <div class="zoom-cont">
+      <div class="zoom-cont">
     <button class="zoom" id="zoom-out">-</button>
     <button class="zoom" id="zoom-in">+</button>
   </div>
+
+
+  <div id="wrap">
 
 <!-- Menu -->
 <div class="menu">
@@ -113,6 +114,17 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
 </div>
 
 </div>
+  
+
+  <!-- Modal invisível -->
+  
+
+
+
+</div>
+
+
+
 
 </body>
 </html>
@@ -205,7 +217,7 @@ var svg = d3.select("#map")
 ;
 
 
-var tooltip = d3.select('#map').append('div')
+var tooltip = d3.select('#wrap').append('div')
 .attr('class', 'hidden tooltip');
 
 /// Começa a desenhar o mapa

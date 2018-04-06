@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 @font-face {
   font-family: 'Open Sans';
   src: local('Open Sans Light'), local('OpenSans-Light'), url(fonte.ttf) format('truetype');
@@ -10,14 +14,13 @@ body {
   font-family: 'Open Sans';
   font-size: 16px;
   background-color: LightGray;
-  z-index: 1;
 }
 
-header {  
+.logo {  
   text-align:center; 
   padding: 1vh;
   z-index: 3;
-  flex: 1;
+  position: absolute;
   width: 100%;
 }
 
@@ -49,18 +52,23 @@ svg text {
   pointer-events: none;
 }
 
+
+#wrap { 
+    position: absolute;
+    top: 0;
+    width: 20%;
+    z-index: 2;
+     }
+
+
 .menu { 
   background-color: rgb(252, 252, 252); /*fallback*/
   background-color: rgba(252, 252, 252, 0.7);
-  text-align:left; 
   padding: 1vw; 
-  position: absolute;
-  top:0;
-  width: 15vw;
   box-shadow: 0.5vw 0.5vw 0.5vw DarkGray;
-  display: flex;
   flex-direction: column;
-  z-index: 5;
+  z-index: 2;
+  flex: 1;
 }  
 
 .sliderContainer, #timeslide {
@@ -98,21 +106,25 @@ svg text {
 
 /* MEDIA QUERIES */
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1000px) {
+.logo { 
+  position: relative;
+ }
 
   #map {
    height: auto !important;
-   position: relative !important;
    margin-top: 3% !important;
+   order: 1;
  }
 
  .menu {
-  position: relative !important;
+order:2;
   width: 100% !important;   
 }
 
- header {
-  position: relative !important;
+ #wrap {
+  width: 100%;
+  position: relative;
  }
 
 .zoom-cont { 
@@ -125,13 +137,6 @@ svg text {
 
 
 
-.tooltip {
-  position: relative !important;
-  width: 100% !important;
-  left: 0px !important;
-  top: 10% !important;
-  max-width: none !important; 
-}
 
 }
 /*fim media queries*/
@@ -197,12 +202,10 @@ display: flex;
   }
 
   #map {
-    height: 100%;
-    width: 100%;
-    position: absolute;
+    flex: 4;
     display: flex;
     top: 10px;
-    z-index: -1;
+    z-index: 1;
   }
 
 
