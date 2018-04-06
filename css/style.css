@@ -10,12 +10,16 @@ body {
   font-family: 'Open Sans';
   font-size: 16px;
   background-color: LightGray;
+  z-index: 1;
 }
 
 header {  
   text-align:center; 
   padding: 1vh;
-  z-index: 2;
+  z-index: 3;
+  flex: 1;
+  position: absolute;
+  width: 100%;
 }
 
 a {
@@ -29,6 +33,13 @@ ul {
 li { 
   margin-top:1vw;
  }
+
+
+.svg-content-responsive { 
+  height: 100%;
+   }
+
+
 /* desabilita seleção de texto*/    
 svg text {
   -webkit-touch-callout: none;
@@ -48,6 +59,8 @@ svg text {
   top:0;
   width: 15vw;
   box-shadow: 0.5vw 0.5vw 0.5vw DarkGray;
+  display: flex;
+  flex-direction: column;
 }  
 
 .sliderContainer, #timeslide {
@@ -56,8 +69,7 @@ svg text {
 
 /* caixas de zoom*/
 .zoom-cont { 
- position: relative;
- float: right;
+ position: absolute;
  right: 3em;
  bottom: 3em;
 }
@@ -86,27 +98,31 @@ svg text {
 
 /* MEDIA QUERIES */
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 800px) {
 
-  #mapcont {
+  #map {
+   height: auto !important;
    position: relative !important;
    margin-top: 3% !important;
-   z-index:;
  }
+
  .menu {
   position: relative !important;
   width: 100% !important;   
 }
 
+ header {
+  position: relative !important;
+ }
+
 .zoom-cont { 
-  float:none;
   right:0;
   bottom:0;
   margin-top:1em;
+  position: relative !important;
+  padding-bottom: 3%;
 }
-.zoom {
-  padding: 15px 15px !important;
-}
+
 
 
 .tooltip {
@@ -118,11 +134,11 @@ svg text {
 }
 
 }
-
+/*fim media queries*/
 /* labels */
 
 .label-cont { 
-width: 100%
+display: flex;
 }
 
 .label { 
@@ -180,20 +196,15 @@ width: 100%
     text-align: left;
   }
 
-
-  #mapcont, #mapcont {
+  #map {
+    height: 100%;
     width: 100%;
     position: absolute;
+    display: flex;
     top: 10px;
-    height: 99%;
-
+    z-index: -1;
   }
 
-  .svg-content-responsive {
-    top: 10px;
-    left: 0;
-    height: 100%;
-  }
 
 /*timeslider*/
 
@@ -229,7 +240,7 @@ input[type=range]::-webkit-slider-thumb {
   margin-top: -11px;
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #7D0849;
+  background: #e33a53;
 }
 input[type=range]::-moz-range-track {
   width: 100%;

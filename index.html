@@ -24,11 +24,14 @@
 </head>
 
 <header>
-  <img src="logo.png" alt ="Onde a Polícia Mata?" class="center"></img>
+  <img src="logo.png" alt ="Onde a Polícia Mata?"></img>
 </header>
 
 
 <body>
+    <!-- Mapa -->
+     <div id="map">
+     </div>
 
   <!-- Modal invisível -->
   <div id="saibamais-cont" class="modal">
@@ -47,11 +50,6 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
     </div>
   </div>
 
-    <!-- Mapa -->
-    <div id="mapcont">
-     <div id="map">
-     </div>
-   </div>
    <div class="zoom-cont">
     <button class="zoom" id="zoom-out">-</button>
     <button class="zoom" id="zoom-in">+</button>
@@ -77,8 +75,10 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
   </div>
 
   <div class="dados">
-    <br>Os batalhões da Polícia Militar causaram<br>
-    <b class="homicidios">5491</b><br> homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2010 e 2017<br>
+    <p>Os batalhões da Polícia Militar causaram</p>
+    <b class="homicidios">5491</b>
+    <p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro 
+    entre 2010 e 2017</p>
   </div>
 
   <br>
@@ -234,7 +234,8 @@ tipMouseOver = function(d, i) {
 
   if (inputValue != "Total") {
 
-  d3.select(".dados").html("<p> O " + d.properties.AISP + "° batalhão da Polícia Militar causou <b class='homicidios'><br>" + d.properties.Total + " </b><br />homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2010 e 2017<br></p>")
+
+  d3.select(".dados").html("<p>O " + d.properties.AISP + "° batalhão da Polícia Militar causou</p> <b class='homicidios'>" + d.properties.Total + " </b><p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2010 e 2017</p>")
 
         }
       /// tooltip da direita conteudo              
@@ -266,6 +267,7 @@ function mousegone() {
 
 /// Zoom no click
 function clicked(d) {
+
   var x, y, k;
 
   if (d && centered !== d) {
