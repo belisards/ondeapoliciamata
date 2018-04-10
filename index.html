@@ -81,7 +81,7 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
 
   <div class="dados">
     <p>Os batalhões da Polícia Militar causaram</p>
-    <b class="homicidios">5491</b>
+    <b class="homicidios">5496</b>
     <p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro 
     entre 2010 e 2017</p>
   </div>
@@ -251,7 +251,7 @@ tipMouseOver = function(d, i) {
   if (inputValue != "Total") {
 
 
-  d3.select(".dados").html("<p>O " + d.properties.AISP + "° batalhão da Polícia Militar causou</p> <b class='homicidios'>" + d.properties.Total + " </b><p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2010 e 2017</p>")
+  d3.select(".dados").html("<p>O " + d.properties.AISP + "° batalhão da Polícia Militar causou <b class='homicidios'>" + valor + "</b> homicídios decorrentes de intervenção policial </b> em " + time[ano_selecionado]  + " e <b class='homicidios'>" +  d.properties.Total + " </b>entre 2010 e 2017</p>")
 
         }
       /// tooltip da direita conteudo              
