@@ -57,7 +57,7 @@ svg text {
     position: absolute;
     top: 0;
     width: 20%;
-    z-index: 5;
+    z-index: 3;
      }
 
 
@@ -67,6 +67,7 @@ svg text {
   padding: 1vw; 
   box-shadow: 0.5vw 0.5vw 0.5vw DarkGray;
   flex-direction: column;
+  margin-bottom: 2vh;
 }  
 
 .sliderContainer, #timeslide {

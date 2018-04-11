@@ -38,12 +38,12 @@
 Os assassinatos cometidos policiais normalmente são registrados como "autos de resistência" e classificados separadamente pelas forças de segurança pública, que alegam suposta morte por "exclusão de ilicitude”. Isto significa que o homicídio praticado pelo policial assume desde logo a presunção de que não é ilícito, contrário ao ordenamento legal, pois teria sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. A presunção de legalidade da ação policial não se esgota na mera classificação dos casos - a legitimação dos homicídios praticados por policiais pode ser verificável durante todo o tratamento conferido pelo sistema de justiça criminal, incluindo o Ministério Público e o Poder Judiciário. </p>
         <p>
 <b>Onde a Polícia Mata</b> reúne dados sobre a distribuição dos autos de resistência nos anos entre 2010 e 2017, de acordo com as informações disponibilizadas pelo Instituto de Segurança Pública (ISP). O mapa apresenta a distribuição de acordo com a soma dos registros neste período, de acordo com as áreas de atuação de um batalhão da Polícia Militar, também chamadas de Áreas Integradas de Segurança Pública (AISPs). 
-
+<br>
 <b>Notas</b>
   Em 2010, não há dados para 41° batalhão pois esta AISP foi criada naquele ano a partir da área do 9° batalhão.
 </p>
         <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a></p>
-        <p>Apoio: <a href="http://br.boell.org/pt-br" target="_blank"> Fundação Heinrich Böll</a></p>
+        <p>Apoio: <a href="http://br.boell.org/pt-br" target="_blank"> Fundação Heinrich Böll</a> e <a href="https://www.fordfoundation.org/regions/brazil/" target="_blank"> Fundação Ford</a></p>
 
          <p>Desenvolvimento em <a href="https://github.com/belisards/ondeapoliciamata/" target="_blank">código-aberto</a> por <a href="https://twitter.com/belisards/"" target="_blank">Adriano Belisário</a></p>
     </div>
@@ -63,7 +63,7 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
 <!-- Menu -->
 <div class="menu">
   <div class="sliderContainer">
-    <h4>SELECIONE O ANO [2010-2017]:</h4>
+    <h4>SELECIONE O ANO:</h4>
     <input id="timeslide" type="range" min="0" max="8" value="8" step="1" list="ticks"/><br>
     <datalist id="ticks">
       <option>2010</option>
@@ -76,14 +76,11 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
       <option>2017</option>
       <option>Total</option>
     </datalist>
-    <span id="range">Total</span>
+    <span id="range">Total [2010 a 2017]</span>
   </div>
 
   <div class="dados">
-    <p>Os batalhões da Polícia Militar causaram</p>
-    <b class="homicidios">5496</b>
-    <p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro 
-    entre 2010 e 2017</p>
+    <p></p>
   </div>
 
   <br>
@@ -193,9 +190,10 @@ d3.select('#zoom-out').on('click', function() {
 
 
 // Timeslider
-var inputValue = 'Total';
-var time = ["2010","2011","2012","2013","2014", "2015", "2016", "2017", "Total"];
-var timeProp = ["dez","onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezesete", "Total"]
+var inputValue = 'no total';
+var time = ["em 2010","em 2011","em 2012","em 2013","em 2014", "em 2015", "em 2016", "em 2017", "no total"];
+var timeProp = ["dez","onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezesete", "Total"];
+var timeano = ["2010","2011","2012","2013","2014", "2015", "2016", "2017", "Total [2010 a 2017]"];
 var ano_selecionado = 8;
 
 
@@ -235,7 +233,6 @@ d3.json("autoresistenciario.json", function(error, aisp) {
   .attr("d", path) 
   .on('mousemove', mousemoved)
   .on('mouseover', tipMouseOver) 
-  .on('mouseout', tipMouseOut)
   .on('mouseout', mousegone)
   .on('click', clicked)
 }); 
@@ -248,12 +245,11 @@ tipMouseOver = function(d, i) {
   var nome_ano = timeProp[ano_selecionado];
   var valor = d.properties[nome_ano];
 
-  if (inputValue != "Total") {
-
-
-  d3.select(".dados").html("<p>O " + d.properties.AISP + "° batalhão da Polícia Militar causou <b class='homicidios'>" + valor + "</b> homicídios decorrentes de intervenção policial </b> em " + time[ano_selecionado]  + " e <b class='homicidios'>" +  d.properties.Total + " </b>entre 2010 e 2017</p>")
+  if (inputValue != "no total") {
+  d3.select(".dados").html("<p>O " + d.properties.AISP + "° batalhão da Polícia Militar causou <b class='homicidios'>" + valor + "</b> homicídios decorrentes de intervenção policial </b>" + time[ano_selecionado]  + " e <b class='homicidios'>" +  d.properties.Total + " </b>entre 2010 e 2017</p>")
 
         }
+
       /// tooltip da direita conteudo              
     }
 
@@ -271,10 +267,12 @@ function mousemoved(d) {
   tooltip.classed('hidden', false)
   .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
   .html(
-   "<p>O <b>" + d.properties.AISP + "° BATALHÃO</b> causou <b>" + valor + " homicídios </b> em " + time[ano_selecionado]   +  "</p><p>Regiões: " + d.properties.bairros  + "</p>"
+   "<p>O <b>" + d.properties.AISP + "° BATALHÃO</b> causou <b>" + valor + " homicídios </b>" + time[ano_selecionado]   +  "</p><p>Regiões: " + d.properties.bairros  + "</p>"
           //  <br>[" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>" 
           //                      
           )
+
+  
 }
 
 function mousegone() {
@@ -317,7 +315,7 @@ d3.select("#timeslide").on("input", function() {
 });
 
 function update(value) {
-  document.getElementById("range").innerHTML=time[value];
+  document.getElementById("range").innerHTML=timeano[value];
   inputValue = time[value];
   d3.selectAll("path")
   .style("fill", timeMatch)
@@ -325,10 +323,9 @@ function update(value) {
 }
 
 function timeMatch(aisp) {
-  if (inputValue != "Total") {
+  if (inputValue != "no total") {
    d3.select('.label-ano').classed('hidden', false);
    d3.select('.label-total').classed('hidden', true);
-
    var nome_ano = timeProp[ano_selecionado];
    if (aisp.properties[nome_ano] == "0") {
     return '#eaedf2'
@@ -358,6 +355,7 @@ function timeMatch(aisp) {
 else  {
   d3.select('.label-ano').classed('hidden', true);
   d3.select('.label-total').classed('hidden', false);
+d3.select(".dados").html("<p>Os batalhões da Polícia Militar causaram</p><b class='homicidios'>5486</b>    <p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2010 e 2017</p>");
   if (aisp.properties.Total < "1") {
     return '#eaedf2'
   }
@@ -381,6 +379,7 @@ else  {
   }
   else {
     return 'black'
+  ;
   }
 }
 ;
