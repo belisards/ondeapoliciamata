@@ -38,9 +38,11 @@
 Os assassinatos cometidos policiais normalmente são registrados como "autos de resistência" e classificados separadamente pelas forças de segurança pública, que alegam suposta morte por "exclusão de ilicitude”. Isto significa que o homicídio praticado pelo policial assume desde logo a presunção de que não é ilícito, contrário ao ordenamento legal, pois teria sido praticado em legítima defesa ou com o objetivo de "vencer a resistência" de supostos autores de crimes. A presunção de legalidade da ação policial não se esgota na mera classificação dos casos - a legitimação dos homicídios praticados por policiais pode ser verificável durante todo o tratamento conferido pelo sistema de justiça criminal, incluindo o Ministério Público e o Poder Judiciário. </p>
         <p>
 <b>Onde a Polícia Mata</b> reúne dados sobre a distribuição dos autos de resistência nos anos entre 2010 e 2017, de acordo com as informações disponibilizadas pelo Instituto de Segurança Pública (ISP). O mapa apresenta a distribuição de acordo com a soma dos registros neste período, de acordo com as áreas de atuação de um batalhão da Polícia Militar, também chamadas de Áreas Integradas de Segurança Pública (AISPs). 
-<br>
-<b>Notas</b>
-  Em 2010, não há dados para 41° batalhão pois esta AISP foi criada naquele ano a partir da área do 9° batalhão.
+<p>
+<b>Notas:</b>Em 2010, não há dados para 41° batalhão pois esta AISP foi criada naquele ano a partir da área do 9° batalhão. E, em julho de 2011, a AISP 13 foi incorporada na região 5, enquanto a AISP 1 se uniu às AISPS 4 e 5.
+  </p>
+
+
 </p>
         <p>Realização: <a href="https://global.org.br/" target="_blank">Justiça Global</a></p>
         <p>Apoio: <a href="http://br.boell.org/pt-br" target="_blank"> Fundação Heinrich Böll</a> e <a href="https://www.fordfoundation.org/regions/brazil/" target="_blank"> Fundação Ford</a></p>
@@ -108,28 +110,16 @@ Os assassinatos cometidos policiais normalmente são registrados como "autos de 
     <li><span class="grau5"></span> Entre 80 e 100</li><br />
     <li><span class="grau6"></span> Mais de 100</li><br />
   </ul>
-</div>
+  </div>
 
 </div>
-  
-
-  <!-- Modal invisível -->
-  
-
-
-
 </div>
-
-
-
-
 </body>
 </html>
 
 <script>  
 
-// Texto modal
-// Get the modal
+// Texto modal Saiba mais
 var modal = document.getElementById('saibamais-cont');
 
 // Get the button that opens the modal
@@ -196,15 +186,12 @@ var timeProp = ["dez","onze", "doze", "treze", "catorze", "quinze", "dezesseis",
 var timeano = ["2010","2011","2012","2013","2014", "2015", "2016", "2017", "Total [2010 a 2017]"];
 var ano_selecionado = 8;
 
-
-// desenha enfim o mapa
+// desenha o mapa
 var projection = d3.geoMercator()
 .translate([dims.width / 2, dims.height / 2])
 .scale((dims.width)/ Math.PI);
 
-
 var path = d3.geoPath().projection(projection);
-
 
 var svg = d3.select("#map")
 .append("svg")
@@ -214,17 +201,14 @@ var svg = d3.select("#map")
 .call(zoom)
 ;
 
-
 var tooltip = d3.select('#legenda').append('div')
 .attr('class', 'hidden tooltip');
 
-/// Começa a desenhar o mapa
 var g = svg.append("g");
 
+// Carrega os dados
 d3.json("autoresistenciario.json", function(error, aisp) {
-
   projection.fitSize([dims.width,dims.height], topojson.feature(aisp, aisp.objects.LIMITE_AISP));
-
   g.attr("class", "regiao")
   .selectAll("path")
   .data(topojson.feature(aisp, aisp.objects.LIMITE_AISP).features)
@@ -241,11 +225,11 @@ d3.json("autoresistenciario.json", function(error, aisp) {
 // descritivo Batalhao na direita
 
 tipMouseOver = function(d, i) {
-
   var nome_ano = timeProp[ano_selecionado];
   var valor = d.properties[nome_ano];
 
   if (inputValue != "no total") {
+
   d3.select(".dados").html("<p>O " + d.properties.AISP + "° batalhão da Polícia Militar causou <b class='homicidios'>" + valor + "</b> homicídios decorrentes de intervenção policial </b>" + time[ano_selecionado]  + " e <b class='homicidios'>" +  d.properties.Total + " </b>entre 2010 e 2017</p>")
 
         }
@@ -268,11 +252,8 @@ function mousemoved(d) {
   .attr('style', 'left:' + (d3.event.clientX + 5) + 'px; top:' + (d3.event.clientY - 5) + 'px')
   .html(
    "<p>O <b>" + d.properties.AISP + "° BATALHÃO</b> causou <b>" + valor + " homicídios </b>" + time[ano_selecionado]   +  "</p><p>Regiões: " + d.properties.bairros  + "</p>"
-          //  <br>[" + ((d.properties.Total/5491)*100).toFixed(2) +  "% do total]</b><br>" 
-          //                      
-          )
-
-  
+                     
+          )  
 }
 
 function mousegone() {
@@ -327,6 +308,11 @@ function timeMatch(aisp) {
    d3.select('.label-ano').classed('hidden', false);
    d3.select('.label-total').classed('hidden', true);
    var nome_ano = timeProp[ano_selecionado];
+  var totais_ano = ["855","523","419","416","584","645","925","1124"];
+  
+  d3.select(".dados").html("<p>Os batalhões da Polícia Militar causaram</p><b class='homicidios'>" + totais_ano[ano_selecionado] + "</b><p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro em " + timeano[ano_selecionado]);
+
+
    if (aisp.properties[nome_ano] == "0") {
     return '#eaedf2'
   }
@@ -355,7 +341,7 @@ function timeMatch(aisp) {
 else  {
   d3.select('.label-ano').classed('hidden', true);
   d3.select('.label-total').classed('hidden', false);
-d3.select(".dados").html("<p>Os batalhões da Polícia Militar causaram</p><b class='homicidios'>5486</b>    <p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2010 e 2017</p>");
+d3.select(".dados").html("<p>Os batalhões da Polícia Militar causaram</p><b class='homicidios'>5486</b><p>homicídios decorrentes de intervenção policial no estado do Rio de Janeiro entre 2010 e 2017</p>");
   if (aisp.properties.Total < "1") {
     return '#eaedf2'
   }
